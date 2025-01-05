@@ -1,25 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Container, CssBaseline, Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
+
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              My App
+            </Typography>
+            <Button color="inherit">Login</Button>
+          </Toolbar>
+        </AppBar>
+        <Container maxWidth="md" sx={{ mt: 4 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Welcome to My App
+          </Typography>
+          <Typography variant="body1">
+            This is a React application with TypeScript and Material UI.
+          </Typography>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 }
 
