@@ -80,4 +80,15 @@ export const authService = {
   async googleLogin() {
     window.location.href = `${API_URL}/oauth/google`;
   },
+
+  async getUser(token: string) {
+    const response = await fetch(`${API_URL}/users/profile`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch user profile');
+    return await response.json();
+  },
 }; 

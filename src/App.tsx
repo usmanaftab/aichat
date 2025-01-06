@@ -30,12 +30,12 @@ const theme = createTheme({
 });
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 }
 
 function App() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
 
   return (
     <ThemeProvider theme={theme}>
@@ -48,7 +48,12 @@ function App() {
                 <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>My App</Link>
               </Typography>
               {isAuthenticated ? (
-                <Button color="inherit" onClick={logout}>Logout</Button>
+                <>
+                  <Typography variant="body1" sx={{ mr: 2 }}>
+                    {user?.first_name} {user?.last_name}
+                  </Typography>
+                  <Button color="inherit" onClick={logout}>Logout</Button>
+                </>
               ) : (
                 <Button color="inherit" component={Link} to="/login">Login</Button>
               )}

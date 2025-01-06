@@ -8,7 +8,7 @@ import {
   Box,
   Link as MuiLink,
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -17,13 +17,17 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userData = await authService.login({ email, password });
-      login(userData);
+      const token = await authService.login({ email, password });
+      login(token.access_token);
       navigate('/chat');
     } catch (err) {
       setError('Invalid email or password');
