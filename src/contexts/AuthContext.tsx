@@ -1,9 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '../services/authService';
 
+interface User {
+  first_name: string;
+  last_name: string;
+  fullName(): string;
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any | null;
+  user: User | null;
   token: string | null;
   login: (accessToken: string) => void;
   logout: () => void;
@@ -14,12 +20,26 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+
+  const capitalizeFirstLetter = (str: string): string => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
+  const createFullNameFunction = (first_name: string, last_name: string) => {
+    return () => {
+      return `${capitalizeFirstLetter(first_name)} ${capitalizeFirstLetter(last_name)}`;
+    };
+  };
 
   const fetchAndSetUser = async (accessToken: any) => {
     const userData = await authService.getUser(accessToken);
-    setUser(userData);
+    const userWithFullName = {
+      ...userData,
+      fullName: createFullNameFunction(userData.first_name, userData.last_name)
+    };
+    setUser(userWithFullName);
     localStorage.setItem('user', JSON.stringify(userData));
   }
 
@@ -41,7 +61,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (storedUser) {
         setIsAuthenticated(true);
         const userData = JSON.parse(storedUser)
-        setUser(userData);
+        const userWithFullName = {
+          ...userData,
+          fullName: createFullNameFunction(userData.first_name, userData.last_name)
+        };
+        setUser(userWithFullName);
     }
   }, []);
 

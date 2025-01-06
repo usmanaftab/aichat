@@ -1,3 +1,5 @@
+import { config } from '../config';
+
 export class AuthError extends Error {
   status: number;
   details: any;
@@ -20,8 +22,6 @@ interface RegisterCredentials extends LoginCredentials {
   last_name: string;
 }
 
-const API_URL = 'http://127.0.0.1:5000/api';
-
 const defaultHeaders = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Credentials': 'true',
@@ -29,7 +29,7 @@ const defaultHeaders = {
 
 export const authService = {
   async login(credentials: LoginCredentials) {
-    const response = await fetch(`${API_URL}/auth/login`, {
+    const response = await fetch(`${config.API_URL}/auth/login`, {
       method: 'POST',
       headers: defaultHeaders,
       body: JSON.stringify(credentials),
@@ -46,7 +46,7 @@ export const authService = {
   },
 
   async register(credentials: RegisterCredentials) {
-    const response = await fetch(`${API_URL}/auth/register`, {
+    const response = await fetch(`${config.API_URL}/auth/register`, {
       method: 'POST',
       headers: defaultHeaders,
       body: JSON.stringify(credentials),
@@ -63,7 +63,7 @@ export const authService = {
   },
 
   async forgotPassword(email: string) {
-    const response = await fetch(`${API_URL}/auth/forgot-password`, {
+    const response = await fetch(`${config.API_URL}/auth/forgot-password`, {
       method: 'POST',
       headers: defaultHeaders,
       body: JSON.stringify({ email }),
@@ -79,7 +79,7 @@ export const authService = {
   },
 
   async resetPassword(token: string, password: string) {
-    const response = await fetch(`${API_URL}/auth/reset-password`, {
+    const response = await fetch(`${config.API_URL}/auth/reset-password`, {
       method: 'POST',
       headers: defaultHeaders,
       body: JSON.stringify({ token, password }),
@@ -95,11 +95,11 @@ export const authService = {
   },
 
   async googleLogin() {
-    window.location.href = `${API_URL}/oauth/google`;
+    window.location.href = `${config.API_URL}/oauth/google`;
   },
 
   async getUser(token: string) {
-    const response = await fetch(`${API_URL}/users/profile`, {
+    const response = await fetch(`${config.API_URL}/users/profile`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },

@@ -9,6 +9,7 @@ import {
   List,
   ListItem,
   Button,
+  Theme,
 } from '@mui/material';
 
 interface Message {
@@ -22,7 +23,7 @@ function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const { user } = useAuth();
-  const userName = `${user?.first_name} ${user?.last_name}` || 'Anonymous'; // You can replace this with actual user name from your auth system
+  const userName = user?.fullName() || 'Anonymous'; // You can replace this with actual user name from your auth system
 
   useEffect(() => {
     // Load messages from localStorage when component mounts
