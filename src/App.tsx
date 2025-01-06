@@ -9,8 +9,13 @@ import {
   Container,
   Button,
 } from '@mui/material';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Chat from './Chat';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import Chat from './pages/Chat';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 const theme = createTheme({
   palette: {
@@ -24,7 +29,14 @@ const theme = createTheme({
   },
 });
 
+function PrivateRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+}
+
 function App() {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -35,28 +47,52 @@ function App() {
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>My App</Link>
               </Typography>
+              {isAuthenticated ? (
+                <Button color="inherit" onClick={logout}>Logout</Button>
+              ) : (
+                <Button color="inherit" component={Link} to="/login">Login</Button>
+              )}
             </Toolbar>
           </AppBar>
 
           <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/chat" element={
+              <PrivateRoute>
+                <Chat />
+              </PrivateRoute>
+            } />
             <Route path="/" element={
               <Container maxWidth="md" sx={{ mt: 4, textAlign: 'center' }}>
                 <Typography variant="h2" component="h1" gutterBottom>
                   Welcome!
                 </Typography>
                 <Typography variant="h5" component="h2" gutterBottom>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    component={Link}
-                    to="/chat"
-                  >
-                    Start Chat
-                  </Button>
+                  {isAuthenticated ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component={Link}
+                      to="/chat"
+                    >
+                      Start Chat
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component={Link}
+                      to="/login"
+                    >
+                      Login to Start
+                    </Button>
+                  )}
                 </Typography>
               </Container>
             } />
-            <Route path="/chat" element={<Chat />} />
           </Routes>
         </Box>
       </Router>
@@ -64,4 +100,12 @@ function App() {
   );
 }
 
-export default App;
+function AppWithAuth() {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}
+
+export default AppWithAuth;
