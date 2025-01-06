@@ -12,22 +12,40 @@ import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { useAuth } from '../contexts/AuthContext';
 
+interface ValidationErrors {
+  first_name?: string[];
+  last_name?: string[];
+  email?: string[];
+  password?: string[];
+}
+
 export default function Register() {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<ValidationErrors>({});
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userData = await authService.register({ name, email, password });
-      login(userData);
+      const userData = await authService.register({
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password
+      });
+      const token = await authService.login({ email, password });
+      login(token.access_token);
       navigate('/chat');
-    } catch (err) {
-      setError('Registration failed. Please try again.');
+    } catch (err: any) {
+      if (err.details?.errors) {
+        setErrors(err.details.errors);
+      } else {
+        setErrors({ email: [err.details.message] });
+      }
     }
   };
 
@@ -38,20 +56,26 @@ export default function Register() {
           Register
         </Typography>
         
-        {error && (
-          <Typography color="error" align="center" gutterBottom>
-            {error}
-          </Typography>
-        )}
-
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
-            label="Name"
+            label="First Name"
             margin="normal"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             required
+            error={!!errors.first_name}
+            helperText={errors.first_name?.[0]}
+          />
+          <TextField
+            fullWidth
+            label="Last Name"
+            margin="normal"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+            error={!!errors.last_name}
+            helperText={errors.last_name?.[0]}
           />
           <TextField
             fullWidth
@@ -61,6 +85,8 @@ export default function Register() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            error={!!errors.email}
+            helperText={errors.email?.[0]}
           />
           <TextField
             fullWidth
@@ -70,6 +96,8 @@ export default function Register() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            error={!!errors.password}
+            helperText={errors.password?.[0]}
           />
           
           <Button

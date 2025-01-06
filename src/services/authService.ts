@@ -1,10 +1,23 @@
+export class AuthError extends Error {
+  status: number;
+  details: any;
+
+  constructor(message: string, status: number, details?: any) {
+    super(message);
+    this.name = 'AuthError';
+    this.status = status;
+    this.details = details;
+  }
+}
+
 interface LoginCredentials {
   email: string;
   password: string;
 }
 
 interface RegisterCredentials extends LoginCredentials {
-  name: string;
+  first_name: string;
+  last_name: string;
 }
 
 const API_URL = 'http://127.0.0.1:5000/api';
@@ -23,11 +36,12 @@ export const authService = {
       credentials: 'include',
       mode: 'cors',
     });
-    
+
     if (!response.ok) {
-      throw new Error('Login failed');
+      const error = await response.json();
+      throw new AuthError(error.message || 'Login failed', response.status, error);
     }
-    
+
     return response.json();
   },
 
@@ -41,7 +55,8 @@ export const authService = {
     });
     
     if (!response.ok) {
-      throw new Error('Registration failed');
+      const error = await response.json();
+      throw new AuthError(error.message || 'Registration failed', response.status, error);
     }
     
     return response.json();
@@ -56,7 +71,8 @@ export const authService = {
     });
     
     if (!response.ok) {
-      throw new Error('Failed to send reset email');
+      const error = await response.json();
+      throw new AuthError(error.message || 'Failed to process forgot password request', response.status, error);
     }
     
     return response.json();
@@ -71,7 +87,8 @@ export const authService = {
     });
     
     if (!response.ok) {
-      throw new Error('Password reset failed');
+      const error = await response.json();
+      throw new AuthError(error.message || 'Failed to reset password', response.status, error);
     }
     
     return response.json();
@@ -88,7 +105,11 @@ export const authService = {
       },
     });
 
-    if (!response.ok) throw new Error('Failed to fetch user profile');
+    if (!response.ok) {
+      const error = await response.json();
+      throw new AuthError(error.message || 'Failed to fetch user profile', response.status, error);
+    }
+
     return await response.json();
   },
 }; 
