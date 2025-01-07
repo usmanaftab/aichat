@@ -28,7 +28,7 @@
   },
   "scripts": {
     "predeploy": "REACT_APP_ENV=production npm run build",
-    "deploy": "REACT_APP_ENV=production npm run build && your-deploy-command",
+    "deploy": "REACT_APP_ENV=production gh-pages -d build",
     "start": "REACT_APP_ENV=development react-scripts start",
     "build": "REACT_APP_ENV=production react-scripts build",
     "test": "react-scripts test",
