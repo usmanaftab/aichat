@@ -11,7 +11,7 @@ const development: Config = {
 };
 
 const production: Config = {
-  API_URL: 'https://your-production-domain.com/api',
+  API_URL: 'http://127.0.0.1:5000/api',
   BASE_PATH: '/my-app/',
   NOT_FOUND_REDIRECT: '/',
 };
