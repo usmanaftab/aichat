@@ -21,8 +21,14 @@ export const chatService = {
       body: JSON.stringify({ "message": message, "context_id": contextId }),
     });
 
+    if (response.status === 401) {
+      sessionStorage.clear();
+      localStorage.clear();
+      throw { message: 'Session expired. Please login again.', status: 401 };
+    }
+
     if (!response.ok) {
-      throw new Error('Failed to send message');
+      throw { message: 'Failed to send message', status: response.status };
     }
 
     const responseData = await response.json();

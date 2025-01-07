@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNotification } from '../contexts/NotificationContext';
+import { useNavigate } from 'react-router-dom';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const MessageBubble = styled('div')<{ isUser: boolean }>(({ theme, isUser }) => ({
@@ -51,6 +52,7 @@ function Chat() {
   const userName = user?.fullName() || 'Anonymous'; // You can replace this with actual user name from your auth system
   const [isLoading, setIsLoading] = useState(false);
   const { showError } = useNotification();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadMessages = () => {
@@ -113,9 +115,12 @@ function Chat() {
 
         // Clearing input field
         setNewMessage('');
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to send message:', error);
-        showError('Failed to send message. Please try again.');
+        showError(error.message);
+        if (error.status === 401) {
+          navigate('/login');
+        }
       } finally {
         setIsLoading(false);
       }
