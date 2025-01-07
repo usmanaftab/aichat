@@ -13,6 +13,8 @@ import {
   CircularProgress,
   Typography,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
 import { styled } from '@mui/material/styles';
 import { useNotification } from '../contexts/NotificationContext';
 import { useNavigate } from 'react-router-dom';
@@ -203,41 +205,21 @@ function Chat() {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             disabled={isLoading}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '20px',
-                backgroundColor: 'white',
-              }
-            }}
           />
           <Button
             type="submit"
             variant="contained"
             color="primary"
             disabled={!newMessage.trim() || isLoading}
-            sx={{
-              borderRadius: '20px',
-              px: 3,
-              minWidth: '100px',
-            }}
+            size="medium"
+            endIcon={<SendIcon />}
           >
             {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Send'}
           </Button>
-          <Button
-            variant="outlined"
-            color="info"
+          <Button variant="outlined"
+            startIcon={<DeleteIcon />}
             onClick={handleStartNewChat}
-            startIcon={<AddCircleOutlineIcon />}
-            sx={{
-              borderRadius: '20px',
-              px: 3,
-              minWidth: '140px',
-              borderColor: 'info.main',
-              '&:hover': {
-                borderColor: 'info.dark',
-                backgroundColor: 'info.lighter',
-              },
-            }}
+            size="medium"
           >
             New Chat
           </Button>
