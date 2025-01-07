@@ -11,6 +11,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   token: string | null;
+  loading: boolean;
   login: (accessToken: string) => void;
   logout: () => void;
 }
@@ -22,6 +23,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const capitalizeFirstLetter = (str: string): string => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -72,10 +74,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (storedToken) {
       setToken(storedToken);
     }
+    
+    setLoading(false);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, token, login, logout }}>
+    <AuthContext.Provider value={{ 
+      isAuthenticated: !!token, 
+      user, 
+      token,
+      loading,
+      login,
+      logout
+    }}>
       {children}
     </AuthContext.Provider>
   );

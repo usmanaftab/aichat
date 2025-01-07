@@ -1,6 +1,7 @@
 import { config } from '../config';
 
 export interface Message {
+  id: string,
   contextId: string;
   message: string;
   timestamp: number;
@@ -9,6 +10,7 @@ export interface Message {
 
 export const chatService = {
   sendMessage: async (message: string, token: string): Promise<Message> => {
+    const contextId = sessionStorage.getItem('contextId') || '';
 
     const response = await fetch(`${config.API_URL}/chat/send`, {
       method: 'POST',
@@ -16,7 +18,7 @@ export const chatService = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ "message": message, "contextId": contextId }),
     });
 
     if (!response.ok) {
@@ -24,6 +26,8 @@ export const chatService = {
     }
 
     const responseData = await response.json();
+
+    sessionStorage.setItem('contextId', responseData.contextId);
 
     return {
       ...responseData,

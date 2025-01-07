@@ -14,6 +14,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useNotification } from '../contexts/NotificationContext';
 
 const MessageBubble = styled('div')<{ isUser: boolean }>(({ theme, isUser }) => ({
   backgroundColor: isUser ? theme.palette.primary.main : theme.palette.grey[100],
@@ -47,6 +48,7 @@ function Chat() {
   const { isAuthenticated, user , token } = useAuth();
   const userName = user?.fullName() || 'Anonymous'; // You can replace this with actual user name from your auth system
   const [isLoading, setIsLoading] = useState(false);
+  const { showError } = useNotification();
 
   useEffect(() => {
     // Load messages from localStorage when component mounts
@@ -71,6 +73,7 @@ function Chat() {
       try {
         setIsLoading(true);
         const userMessage: Message = {
+          id: crypto.randomUUID(),
           contextId: '',
           message: newMessage,
           timestamp: Date.now(),
@@ -83,6 +86,7 @@ function Chat() {
         setNewMessage('');
       } catch (error) {
         console.error('Failed to send message:', error);
+        showError('Failed to send message. Please try again.');
       } finally {
         setIsLoading(false);
       }

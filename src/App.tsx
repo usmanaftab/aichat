@@ -5,6 +5,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import NavigationBar from './components/NavigationBar';
 import AppRoutes from './components/AppRoutes';
+import { GlobalSnackbar } from './components/GlobalSnackbar';
+import { NotificationProvider } from './contexts/NotificationContext';
 
 const theme = createTheme({
   palette: {
@@ -20,15 +22,18 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <Box sx={{ flexGrow: 1 }}>
-          <NavigationBar />
-          <AppRoutes />
-        </Box>
-      </Router>
-    </ThemeProvider>
+      <NotificationProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <Box sx={{ flexGrow: 1 }}>
+              <NavigationBar />
+              <AppRoutes />
+            </Box>
+          </Router>
+          <GlobalSnackbar />
+        </ThemeProvider>
+      </NotificationProvider>
   );
 }
 
