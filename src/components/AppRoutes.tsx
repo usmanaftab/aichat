@@ -9,6 +9,7 @@ import ResetPassword from '../pages/ResetPassword';
 import Chat from '../pages/Chat';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
+import NotFound from 'src/pages/NotFound';
 
 function LoadingScreen() {
   return (
@@ -86,6 +87,7 @@ function AppRoutes() {
         </PrivateRoute>
       } />
       <Route path="/" element={<WelcomePage />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
