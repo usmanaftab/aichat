@@ -7,6 +7,7 @@ import NavigationBar from './components/NavigationBar';
 import AppRoutes from './components/AppRoutes';
 import { GlobalSnackbar } from './components/GlobalSnackbar';
 import { NotificationProvider } from './contexts/NotificationContext';
+import { config } from './config';
 
 const theme = createTheme({
   palette: {
@@ -25,7 +26,7 @@ function App() {
       <NotificationProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Router>
+          <Router basename={config.BASE_PATH}>
             <Box sx={{ flexGrow: 1 }}>
               <NavigationBar />
               <AppRoutes />
