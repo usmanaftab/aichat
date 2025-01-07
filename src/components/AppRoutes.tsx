@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import WelcomePage from '../pages/WelcomePage';
 import Login from '../pages/Login';
@@ -51,6 +51,13 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 }
 
 function AppRoutes() {
+  const { setLoadingState } = useAuth();
+  const location = useLocation();
+
+   useEffect(() => {
+    setLoadingState(false);
+  }, [location]);
+
   return (
     <Routes>
       <Route path="/login" element={

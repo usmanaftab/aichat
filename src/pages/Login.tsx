@@ -11,20 +11,23 @@ import {
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
-
+  const { login, setLoadingState } = useAuth();
+  const { showSuccess } = useNotification();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const token = await authService.login({ email, password });
+      setLoadingState(true);
       login(token.access_token);
-      navigate('/chat');
+      navigate('/');
+      showSuccess('You are logged in');
     } catch (err) {
       setError('Invalid email or password');
     }

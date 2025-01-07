@@ -14,6 +14,7 @@ interface AuthContextType {
   loading: boolean;
   login: (accessToken: string) => void;
   logout: () => void;
+  setLoadingState: (loading: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,7 +56,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setIsAuthenticated(false);
     setUser(null);
+    setLoading(false);
+    setToken(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
+  };
+
+  const setLoadingState = (loading: boolean) => {
+    setLoading(loading);
   };
 
   useEffect(() => {
@@ -85,7 +93,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       token,
       loading,
       login,
-      logout
+      logout,
+      setLoadingState
     }}>
       {children}
     </AuthContext.Provider>

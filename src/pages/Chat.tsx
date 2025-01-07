@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { chatService, Message } from '../services/chatService';
-import { Navigate } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -34,18 +33,20 @@ const MessageContainer = styled(ListItem)({
   padding: '8px 16px',
 });
 
-const MessageHeader = styled('div')({
+const MessageHeader = styled('div')<{ isUser: boolean }>(({ isUser }) => ({
   fontSize: '0.8rem',
   color: '#666',
   marginBottom: '4px',
   display: 'flex',
   justifyContent: 'space-between',
-});
+  marginLeft: isUser ? 'auto' : '0',
+  marginRight: isUser ? '0' : 'auto',
+}));
 
 function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const { isAuthenticated, user , token } = useAuth();
+  const { user , token } = useAuth();
   const userName = user?.fullName() || 'Anonymous'; // You can replace this with actual user name from your auth system
   const [isLoading, setIsLoading] = useState(false);
   const { showError } = useNotification();
@@ -63,10 +64,6 @@ function Chat() {
     localStorage.setItem('chatMessages', JSON.stringify(messages));
   }, [messages]);
 
-  if (!isAuthenticated || !token || !user) {
-    return <Navigate to="/login" />;
-  }
-
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newMessage.trim()) {
@@ -79,6 +76,11 @@ function Chat() {
           timestamp: Date.now(),
           userName: userName
         };
+
+        if (!token) {
+          showError('You are not logged in');
+          return;
+        } 
 
         setMessages(prevMessages => [...prevMessages, userMessage]);
         const message = await chatService.sendMessage(newMessage, token);
@@ -104,10 +106,19 @@ function Chat() {
       }}>
         <List>
           {messages.map((message) => (
-            <MessageContainer key={message.contextId}>
-              <MessageHeader>
-                <span style={{ order: message.userName !== 'LLM (llama3.2)' ? 2 : 1 }}>{message.userName}</span>
-                <span style={{ order: message.userName !== 'LLM (llama3.2)' ? 1 : 2 }}>{new Date(message.timestamp).toLocaleTimeString()}</span>
+            <MessageContainer
+              key={message.contextId}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: message.userName !== 'LLM (llama3.2)' ? 'flex-end' : 'flex-start'
+              }}
+            >
+              <MessageHeader isUser={message.userName !== 'LLM (llama3.2)'}>
+                <span>{message.userName}</span>
+              </MessageHeader>
+              <MessageHeader isUser={message.userName !== 'LLM (llama3.2)'}>
+                <span>{new Date(message.timestamp).toLocaleTimeString()}</span>
               </MessageHeader>
               <MessageBubble isUser={message.userName !== 'LLM (llama3.2)'}>
                 {message.message}
