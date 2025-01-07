@@ -29,8 +29,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "build-and-publish": "rm -rf docs/* -y && npm run build && mv -f build/* docs/"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
