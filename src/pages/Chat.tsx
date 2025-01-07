@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNotification } from '../contexts/NotificationContext';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const MessageBubble = styled('div')<{ isUser: boolean }>(({ theme, isUser }) => ({
   backgroundColor: isUser ? theme.palette.primary.main : theme.palette.grey[100],
@@ -52,16 +53,35 @@ function Chat() {
   const { showError } = useNotification();
 
   useEffect(() => {
-    // Load messages from localStorage when component mounts
-    const savedMessages = localStorage.getItem('chatMessages');
-    if (savedMessages) {
-      setMessages(JSON.parse(savedMessages));
-    }
-  }, []);
+    const loadMessages = () => {
+      const savedMessages = localStorage.getItem('chatMessages');
+      if (savedMessages) {
+        try {
+          const parsedMessages = JSON.parse(savedMessages);
+          // Only set messages if we actually have saved messages and messages state is empty
+          if (parsedMessages && Array.isArray(parsedMessages) && parsedMessages.length > 0) {
+            setMessages(parsedMessages);
+          }
+        } catch (error) {
+          console.error('Error parsing saved messages:', error);
+          // If there's an error parsing, clear the corrupted data
+          localStorage.removeItem('chatMessages');
+        }
+      }
+    };
 
-  // Save messages to localStorage whenever they change
+    loadMessages();
+  }, []); // Keep the empty dependency array
+
+  // Modify the save messages useEffect
   useEffect(() => {
-    localStorage.setItem('chatMessages', JSON.stringify(messages));
+    // Only save if we have messages to save
+    if (messages.length > 0) {
+      localStorage.setItem('chatMessages', JSON.stringify(messages));
+    } else {
+      // If messages array is empty, remove the item from localStorage
+      localStorage.removeItem('chatMessages');
+    }
   }, [messages]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -69,6 +89,16 @@ function Chat() {
     if (newMessage.trim()) {
       try {
         setIsLoading(true);
+
+        if (!token) {
+          showError('You are not logged in');
+          return;
+        } 
+
+        // Getting response from LLM
+        const message = await chatService.sendMessage(newMessage, token);
+
+        // Setting user message after getting response from LLM
         const userMessage: Message = {
           id: crypto.randomUUID(),
           contextId: '',
@@ -76,15 +106,12 @@ function Chat() {
           timestamp: Date.now(),
           userName: userName
         };
-
-        if (!token) {
-          showError('You are not logged in');
-          return;
-        } 
-
         setMessages(prevMessages => [...prevMessages, userMessage]);
-        const message = await chatService.sendMessage(newMessage, token);
+
+        // Setting LLM response
         setMessages(prevMessages => [...prevMessages, message]);
+
+        // Clearing input field
         setNewMessage('');
       } catch (error) {
         console.error('Failed to send message:', error);
@@ -93,6 +120,13 @@ function Chat() {
         setIsLoading(false);
       }
     }
+  };
+
+  const handleStartNewChat = () => {
+    setMessages([]);
+    sessionStorage.removeItem('contextId');
+    // This will trigger the useEffect that saves to localStorage,
+    // automatically clearing stored messages as well
   };
 
   return (
@@ -107,7 +141,7 @@ function Chat() {
         <List>
           {messages.map((message) => (
             <MessageContainer
-              key={message.contextId}
+              key={message.id}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -155,6 +189,24 @@ function Chat() {
             }}
           >
             {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Send'}
+          </Button>
+          <Button
+            variant="outlined"
+            color="info"
+            onClick={handleStartNewChat}
+            startIcon={<AddCircleOutlineIcon />}
+            sx={{
+              borderRadius: '20px',
+              px: 3,
+              minWidth: '140px',
+              borderColor: 'info.main',
+              '&:hover': {
+                borderColor: 'info.dark',
+                backgroundColor: 'info.lighter',
+              },
+            }}
+          >
+            New Chat
           </Button>
         </Box>
       </form>

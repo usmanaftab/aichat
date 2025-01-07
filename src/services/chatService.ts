@@ -18,7 +18,7 @@ export const chatService = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({ "message": message, "contextId": contextId }),
+      body: JSON.stringify({ "message": message, "context_id": contextId }),
     });
 
     if (!response.ok) {
@@ -27,10 +27,11 @@ export const chatService = {
 
     const responseData = await response.json();
 
-    sessionStorage.setItem('contextId', responseData.contextId);
+    sessionStorage.setItem('contextId', responseData.context_id);
 
     return {
       ...responseData,
+      id: crypto.randomUUID(),
       message: responseData.response,
       userName: 'LLM (llama3.2)',
       timestamp: Date.now(),
