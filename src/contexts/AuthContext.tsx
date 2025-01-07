@@ -67,6 +67,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         };
         setUser(userWithFullName);
     }
+
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+    }
   }, []);
 
   return (
