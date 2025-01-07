@@ -11,6 +11,7 @@ import {
   Button,
   Theme,
   CircularProgress,
+  Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNotification } from '../contexts/NotificationContext';
@@ -48,11 +49,12 @@ const MessageHeader = styled('div')<{ isUser: boolean }>(({ isUser }) => ({
 function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const { user , token } = useAuth();
+  const { logout, user , token } = useAuth();
   const userName = user?.fullName() || 'Anonymous'; // You can replace this with actual user name from your auth system
   const [isLoading, setIsLoading] = useState(false);
   const { showError } = useNotification();
   const navigate = useNavigate();
+  const [remainingRequests, setRemainingRequests] = useState<number | null>(null);
 
   useEffect(() => {
     const loadMessages = () => {
@@ -84,6 +86,11 @@ function Chat() {
       // If messages array is empty, remove the item from localStorage
       localStorage.removeItem('chatMessages');
     }
+
+    const remainingRequests = sessionStorage.getItem('remainingRequests');
+    if (remainingRequests) {
+      setRemainingRequests(parseInt(remainingRequests));
+    }
   }, [messages]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -99,6 +106,10 @@ function Chat() {
 
         // Getting response from LLM
         const message = await chatService.sendMessage(newMessage, token);
+
+        // Get remaining requests from response headers
+        const remaining = message.remainingRequests ?? null;
+        setRemainingRequests(remaining);
 
         // Setting user message after getting response from LLM
         const userMessage: Message = {
@@ -119,6 +130,7 @@ function Chat() {
         console.error('Failed to send message:', error);
         showError(error.message);
         if (error.status === 401) {
+          logout();
           navigate('/login');
         }
       } finally {
@@ -166,6 +178,22 @@ function Chat() {
           ))}
         </List>
       </Paper>
+      <Typography
+        color="error"
+        sx={{
+          mb: 2,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1
+        }}
+      >
+        Maximum 15 requests allowed per day
+        {remainingRequests !== null && (
+          <span>
+            {' '}• {remainingRequests} requests remaining
+          </span>
+        )}
+      </Typography>
       <form onSubmit={handleSendMessage}>
         <Box sx={{ display: 'flex', gap: 1, position: 'relative' }}>
           <TextField

@@ -6,6 +6,7 @@ export interface Message {
   message: string;
   timestamp: number;
   userName: string;
+  remainingRequests?: number;
 }
 
 export const chatService = {
@@ -27,13 +28,19 @@ export const chatService = {
       throw { message: 'Session expired. Please login again.', status: 401 };
     }
 
+    if (response.status === 429) {
+      throw { message: 'Rate limit exceeded. Please try again later.', status: 429 };
+    }
+
     if (!response.ok) {
       throw { message: 'Failed to send message', status: response.status };
     }
 
     const responseData = await response.json();
+    const remainingRequests = responseData.quota?.remaining_requests;
 
     sessionStorage.setItem('contextId', responseData.context_id);
+    sessionStorage.setItem('remainingRequests', remainingRequests.toString());
 
     return {
       ...responseData,
@@ -41,6 +48,7 @@ export const chatService = {
       message: responseData.response,
       userName: 'LLM (llama3.2)',
       timestamp: Date.now(),
+      remainingRequests
     };
   }
 }; 
