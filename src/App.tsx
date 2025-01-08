@@ -28,7 +28,6 @@ function App() {
           <CssBaseline />
           <Router basename={config.BASE_PATH}>
             <Box sx={{ flexGrow: 1 }}>
-              <NavigationBar />
               <AppRoutes />
             </Box>
           </Router>

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import WelcomePage from '../pages/WelcomePage';
-import Login from '../pages/Login';
 import Register from '../pages/Register';
 import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
@@ -10,6 +9,7 @@ import Chat from '../pages/Chat';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
 import NotFound from 'src/pages/NotFound';
+import SignIn from 'src/pages/sign-in/SignIn';
 
 function LoadingScreen() {
   return (
@@ -63,7 +63,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={
         <PublicRoute>
-          <Login />
+          <SignIn />
         </PublicRoute>
       } />
       <Route path="/register" element={

@@ -17,6 +17,15 @@ import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import AppTheme from '../layout/shared-theme/AppTheme';
 import ColorModeSelect from '../layout/shared-theme/ColorModeSelect';
+import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
+import Alert from '@mui/material/Alert';
+
+import { Link as RLink} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/authService';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNotification } from '../../contexts/NotificationContext';
+import { Collapse } from '@mui/material';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -67,6 +76,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
 
+  const [error, setError] = React.useState('');
+  const navigate = useNavigate();
+  const { login, setLoadingState } = useAuth();
+  const { showSuccess } = useNotification();
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -75,16 +89,30 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (emailError || passwordError) {
-      event.preventDefault();
       return;
     }
-    const data = new FormData(event.currentTarget);
+
+    const email = document.getElementById('email') as HTMLInputElement;
+    const password = document.getElementById('password') as HTMLInputElement;
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email: email.value,
+      password: password.value,
     });
+
+      event.preventDefault();
+      try {
+        const token = await authService.login({ email: email.value, password: password.value });
+
+        setLoadingState(true);
+        login(token.access_token);
+        navigate('/');
+        showSuccess('You are logged in');
+      } catch (err) {
+        setError('Invalid email or password');
+      }
   };
 
   const validateInputs = () => {
@@ -120,14 +148,23 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       <SignInContainer direction="column" justifyContent="space-between">
         <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         <Card variant="outlined">
-          <SitemarkIcon />
+          <AutoAwesomeSharpIcon />
           <Typography
             component="h1"
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            Sign in
+             Sign in
           </Typography>
+          <Collapse in={error !== ''}>
+            <Alert
+              severity="error"
+              onClose={() => setError('')}
+              sx={{ mb: 2 }}
+            >
+              {error}
+            </Alert>
+          </Collapse>
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -217,7 +254,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                component={RLink} to="/register"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
