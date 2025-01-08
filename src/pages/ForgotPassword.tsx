@@ -1,80 +1,57 @@
-import React, { useState } from 'react';
-import {
-  Container,
-  Paper,
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Link as MuiLink,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
-import { authService } from '../services/authService';
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
-export default function ForgotPassword() {
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+interface ForgotPasswordProps {
+  open: boolean;
+  handleClose: () => void;
+}
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await authService.forgotPassword(email);
-      setSuccess(true);
-      setError('');
-    } catch (err) {
-      setError('Failed to send reset email. Please try again.');
-      setSuccess(false);
-    }
-  };
-
+export default function ForgotPassword({ open, handleClose }: ForgotPasswordProps) {
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ p: 4, mt: 8 }}>
-        <Typography variant="h4" component="h1" gutterBottom align="center">
-          Forgot Password
-        </Typography>
-        
-        {error && (
-          <Typography color="error" align="center" gutterBottom>
-            {error}
-          </Typography>
-        )}
-        
-        {success ? (
-          <Typography align="center" color="success.main">
-            Reset instructions sent to your email.
-          </Typography>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              label="Email"
-              type="email"
-              margin="normal"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            
-            <Button
-              fullWidth
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2 }}
-            >
-              Send Reset Link
-            </Button>
-          </form>
-        )}
-
-        <Box sx={{ mt: 2, textAlign: 'center' }}>
-          <MuiLink component={Link} to="/login">
-            Back to Login
-          </MuiLink>
-        </Box>
-      </Paper>
-    </Container>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      PaperProps={{
+        component: 'form',
+        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+          event.preventDefault();
+          handleClose();
+        },
+        sx: { backgroundImage: 'none' },
+      }}
+    >
+      <DialogTitle>Reset password</DialogTitle>
+      <DialogContent
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}
+      >
+        <DialogContentText>
+          Enter your account&apos;s email address, and we&apos;ll send you a link to
+          reset your password.
+        </DialogContentText>
+        <OutlinedInput
+          autoFocus
+          required
+          margin="dense"
+          id="email"
+          name="email"
+          label="Email address"
+          placeholder="Email address"
+          type="email"
+          fullWidth
+        />
+      </DialogContent>
+      <DialogActions sx={{ pb: 3, px: 3 }}>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button variant="contained" type="submit">
+          Continue
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
-} 
+}
