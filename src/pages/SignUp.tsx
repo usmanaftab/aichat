@@ -13,9 +13,9 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import AppTheme from './layout/shared-theme/AppTheme';
-import { GoogleIcon, FacebookIcon } from './layout/shared-theme/CustomIcons';
-import ColorModeSelect from './layout/shared-theme/ColorModeSelect';
+import AppTheme from './shared-theme/AppTheme';
+import { GoogleIcon, FacebookIcon } from './shared-theme/CustomIcons';
+import ColorModeSelect from './shared-theme/ColorModeSelect';
 import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
 
 import { Link as RLink, useNavigate} from 'react-router-dom';
