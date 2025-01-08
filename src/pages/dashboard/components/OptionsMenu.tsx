@@ -10,6 +10,9 @@ import ListItemIcon, { listItemIconClasses } from '@mui/material/ListItemIcon';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from './MenuButton';
+import { useNavigate } from 'react-router-dom';
+import { useNotification } from 'src/contexts/NotificationContext';
+import { useAuth } from 'src/contexts/AuthContext';
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
@@ -17,13 +20,25 @@ const MenuItem = styled(MuiMenuItem)({
 
 export default function OptionsMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { isAuthenticated, logout, user } = useAuth();
+  const navigate = useNavigate();
+  const { showSuccess } = useNotification();
+
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    showSuccess('You are logged out');
+  };
+
   return (
     <React.Fragment>
       <MenuButton
@@ -54,10 +69,6 @@ export default function OptionsMenu() {
         }}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>Add another account</MenuItem>
-        <MenuItem onClick={handleClose}>Settings</MenuItem>
         <Divider />
         <MenuItem
           onClick={handleClose}
@@ -68,8 +79,8 @@ export default function OptionsMenu() {
             },
           }}
         >
-          <ListItemText>Logout</ListItemText>
-          <ListItemIcon>
+          <ListItemText onClick={handleLogout} sx={{ minWidth: 100 }}>Logout</ListItemText>
+          <ListItemIcon onClick={handleLogout}>
             <LogoutRoundedIcon fontSize="small" />
           </ListItemIcon>
         </MenuItem>
