@@ -9,6 +9,7 @@ import SignIn from 'src/pages/SignIn';
 import SignUp from 'src/pages/SignUp';
 import About from '../pages/About';
 import Chat from 'src/pages/Chat';
+import Feedback from 'src/pages/Feedback';
 
 function LoadingScreen() {
   return (
@@ -85,6 +86,11 @@ function AppRoutes() {
       <Route path="/about" element={
         <PrivateRoute>
           <About />
+        </PrivateRoute>
+      } />
+      <Route path="/feedback" element={
+        <PrivateRoute>
+          <Feedback />
         </PrivateRoute>
       } />
       <Route path="*" element={<NotFound />} />
