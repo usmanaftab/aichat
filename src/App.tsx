@@ -6,7 +6,6 @@ import { NotificationProvider } from './contexts/NotificationContext';
 import { config } from './config';
 import AppTheme from './pages/shared-theme/AppTheme';
 import { AuthProvider } from './contexts/AuthContext';
-import WelcomePage from './pages/WelcomePage';
 import { useAuth } from './contexts/AuthContext';
 
 function App(props: { disableCustomTheme?: boolean }) {
@@ -18,7 +17,7 @@ function App(props: { disableCustomTheme?: boolean }) {
         <CssBaseline enableColorScheme />
         <Router basename={config.BASE_PATH}>
           <Box sx={{ flexGrow: 1 }}>
-            {isAuthenticated ? <WelcomePage /> : <AppRoutes />}
+            <AppRoutes />
           </Box>
         </Router>
         <GlobalSnackbar />

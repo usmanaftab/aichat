@@ -1,11 +1,12 @@
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import AppNavbar from './dashboard/components/AppNavbar';
-import Header from './dashboard/components/Header';
-import SideMenu from './dashboard/components/SideMenu';
-import Copyright from './dashboard/internals/components/Copyright';
+import AppNavbar from '../dashboard/components/AppNavbar';
+import Header from '../dashboard/components/Header';
+import SideMenu from '../dashboard/components/SideMenu';
+import Copyright from '../dashboard/internals/components/Copyright';
 import AppRoutes from 'src/components/AppRoutes';
+import { Outlet } from 'react-router-dom';
 
 export default function Home(props: { disableCustomTheme?: boolean }) {
   return (
@@ -31,7 +32,7 @@ export default function Home(props: { disableCustomTheme?: boolean }) {
           }}
         >
           <Header />
-          <AppRoutes />
+          <Outlet /> {/* This is where the nested routes' components will render */}
           <Copyright sx={{ my: 4 }} />
         </Stack>
       </Box>

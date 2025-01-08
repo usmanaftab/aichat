@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { CircularProgress, Box } from '@mui/material';
 import ResetPassword from '../pages/ResetPassword';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
@@ -10,14 +9,8 @@ import SignUp from 'src/pages/SignUp';
 import About from '../pages/About';
 import Chat from 'src/pages/Chat';
 import Feedback from 'src/pages/Feedback';
-
-function LoadingScreen() {
-  return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-      <CircularProgress />
-    </Box>
-  );
-}
+import LoadingScreen from 'src/pages/shared-theme/loadingScreen';
+import MainLayout from 'src/pages/shared-theme/MainLayout';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
     const { isAuthenticated, user, token, loading } = useAuth();
@@ -63,6 +56,11 @@ function AppRoutes() {
 
   return (
     <Routes>
+      <Route path="/" element={ <MainLayout /> }>
+        <Route index element={ <Chat /> } />
+        <Route path="/about" element={ <About /> } />
+        <Route path="/feedback" element={ <Feedback /> } />
+      </Route>
       <Route path="/login" element={
         <PublicRoute>
           <SignIn />
@@ -77,21 +75,6 @@ function AppRoutes() {
         <PublicRoute>
           <ResetPassword />
         </PublicRoute>
-      } />
-      <Route path="/" element={
-        <PrivateRoute>
-          <Chat />
-        </PrivateRoute>
-      } />
-      <Route path="/about" element={
-        <PrivateRoute>
-          <About />
-        </PrivateRoute>
-      } />
-      <Route path="/feedback" element={
-        <PrivateRoute>
-          <Feedback />
-        </PrivateRoute>
       } />
       <Route path="*" element={<NotFound />} />
     </Routes>

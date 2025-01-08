@@ -18,7 +18,8 @@ import SendIcon from '@mui/icons-material/Send';
 import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 import { useNotification } from '../contexts/NotificationContext';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import LoadingScreen from './shared-theme/loadingScreen';
 
 const MessageBubble = styled('div')<{ isUser: boolean }>(({ theme, isUser }) => ({
   backgroundColor: isUser ? theme.palette.primary.main : theme.palette.background.paper,
@@ -52,7 +53,7 @@ const MessageHeader = styled('div')<{ isUser: boolean }>(({ isUser }) => ({
 function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const { logout, user , token } = useAuth();
+  const { logout, user , token, isAuthenticated, loading } = useAuth();
   const userName = user?.fullName() || 'Anonymous'; // You can replace this with actual user name from your auth system
   const [isLoading, setIsLoading] = useState(false);
   const { showError } = useNotification();
@@ -148,6 +149,18 @@ function Chat() {
     // This will trigger the useEffect that saves to localStorage,
     // automatically clearing stored messages as well
   };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <Button variant="contained" color="primary" onClick={() => navigate('/login')}>
+        Sign In to chat
+      </Button>
+    );
+  }
 
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>

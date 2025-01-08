@@ -6,9 +6,6 @@ import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
-
-import MenuButton from './MenuButton';
 import MenuContent from './MenuContent';
 
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +18,7 @@ interface SideMenuMobileProps {
 }
 
 export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
-  const { user, logout, setLoadingState } = useAuth();
+  const { user, logout, setLoadingState, isAuthenticated} = useAuth();
   const navigate = useNavigate();
   const { showSuccess } = useNotification();
 
@@ -72,7 +69,7 @@ export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobilePro
           <MenuContent />
           <Divider />
         </Stack>
-        <Stack sx={{ p: 2 }}>
+        <Stack sx={{ p: 2 }} visibility={isAuthenticated ? 'visible' : 'hidden'}>
           <Button onClick={handleLogout} variant="outlined" fullWidth startIcon={<LogoutRoundedIcon />}>
             Logout
           </Button>

@@ -9,10 +9,14 @@ import Typography from '@mui/material/Typography';
 import MenuContent from './MenuContent';
 import OptionsMenu from './OptionsMenu';
 import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
+import MenuButton from './MenuButton';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { useAuth } from 'src/contexts/AuthContext';
+import { useState } from 'react';
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const Drawer = styled(MuiDrawer)({
   width: drawerWidth,
@@ -26,11 +30,25 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export default function SideMenu() {
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setDrawerOpen(newOpen);
+  };
 
   return (
+    <Box>
+      <MenuButton onClick={toggleDrawer(true)} sx={{ mt: 1, ml: 1 }}>
+        <MenuRoundedIcon />
+      </MenuButton>
     <Drawer
-      variant="permanent"
+      variant="persistent"
+      anchor='left'
+      open={drawerOpen}
+      ModalProps={{
+        keepMounted: true,
+      }}
       sx={{
         display: { xs: 'none', md: 'block' },
         [`& .${drawerClasses.paper}`]: {
@@ -48,18 +66,23 @@ export default function SideMenu() {
         <Stack
           direction="row"
           spacing={1}
-          sx={{ justifyContent: 'center', mr: 'auto' }}
+          sx={{ justifyContent: 'flex-start', mr: 'auto', alignItems: 'baseline', width: '100%' }}
         >
-          <AutoAwesomeSharpIcon />
-          <Typography variant="h6">
+          <AutoAwesomeSharpIcon sx={{ flex: ' 0 0 auto'}}/>
+          <Typography variant="h6" sx={{ flex: ' 0 0 auto'}}>
             AI Chat
           </Typography>
+          <Box sx={{ flexGrow: 1 }}></Box>
+          <MenuButton onClick={toggleDrawer(false)}>
+            <ChevronLeftIcon />
+          </MenuButton>
         </Stack>
       </Box>
       <Divider />
       <MenuContent />
       <Stack
         direction="row"
+        visibility={isAuthenticated ? 'visible' : 'hidden'}
         sx={{
           p: 2,
           gap: 1,
@@ -85,5 +108,6 @@ export default function SideMenu() {
         <OptionsMenu />
       </Stack>
     </Drawer>
+</Box>
   );
 }
