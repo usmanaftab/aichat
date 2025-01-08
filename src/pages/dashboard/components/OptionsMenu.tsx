@@ -20,7 +20,7 @@ const MenuItem = styled(MuiMenuItem)({
 
 export default function OptionsMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { isAuthenticated, logout, user } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const { showSuccess } = useNotification();
 

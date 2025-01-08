@@ -11,12 +11,26 @@ import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import MenuButton from './MenuButton';
 import MenuContent from './MenuContent';
 
+import { useNavigate } from 'react-router-dom';
+import { useNotification } from 'src/contexts/NotificationContext';
+import { useAuth } from 'src/contexts/AuthContext';
+
 interface SideMenuMobileProps {
   open: boolean | undefined;
   toggleDrawer: (newOpen: boolean) => () => void;
 }
 
 export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const { showSuccess } = useNotification();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    showSuccess('You are logged out');
+  };
+
   return (
     <Drawer
       anchor="right"
@@ -43,17 +57,14 @@ export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobilePro
           >
             <Avatar
               sizes="small"
-              alt="Riley Carter"
+              alt={user?.fullName()}
               src="/static/images/avatar/7.jpg"
               sx={{ width: 24, height: 24 }}
             />
             <Typography component="p" variant="h6">
-              Riley Carter
+              {user?.fullName()}
             </Typography>
           </Stack>
-          <MenuButton showBadge>
-            <NotificationsRoundedIcon />
-          </MenuButton>
         </Stack>
         <Divider />
         <Stack sx={{ flexGrow: 1 }}>
@@ -61,7 +72,7 @@ export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobilePro
           <Divider />
         </Stack>
         <Stack sx={{ p: 2 }}>
-          <Button variant="outlined" fullWidth startIcon={<LogoutRoundedIcon />}>
+          <Button onClick={handleLogout} variant="outlined" fullWidth startIcon={<LogoutRoundedIcon />}>
             Logout
           </Button>
         </Stack>
