@@ -12,16 +12,16 @@ import {
   Theme,
   CircularProgress,
   Typography,
+  IconButton,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
+import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 import { useNotification } from '../contexts/NotificationContext';
 import { useNavigate } from 'react-router-dom';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const MessageBubble = styled('div')<{ isUser: boolean }>(({ theme, isUser }) => ({
-  backgroundColor: isUser ? theme.palette.primary.main : theme.palette.grey[100],
+  backgroundColor: isUser ? theme.palette.primary.main : theme.palette.background.paper,
   color: isUser ? theme.palette.primary.contrastText : theme.palette.text.primary,
   padding: '8px 16px',
   borderRadius: '12px',
@@ -29,6 +29,7 @@ const MessageBubble = styled('div')<{ isUser: boolean }>(({ theme, isUser }) => 
   marginLeft: isUser ? 'auto' : '0',
   marginRight: isUser ? '0' : 'auto',
   wordWrap: 'break-word',
+  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
 }));
 
 const MessageContainer = styled(ListItem)({
@@ -155,7 +156,9 @@ function Chat() {
         mb: 2,
         overflow: 'auto',
         p: 2,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: (theme) => theme.palette.background.default,
+        boxShadow: (theme) => theme.shadows[3],
+        borderRadius: 2,
       }}>
         <List>
           {messages.map((message) => (
@@ -180,15 +183,7 @@ function Chat() {
           ))}
         </List>
       </Paper>
-      <Typography
-        color="error"
-        sx={{
-          mb: 2,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1
-        }}
-      >
+      <Typography color="secondary" >
         Maximum 15 requests allowed per day
         {remainingRequests !== null && (
           <span>
@@ -206,23 +201,15 @@ function Chat() {
             onChange={(e) => setNewMessage(e.target.value)}
             disabled={isLoading}
           />
-          <Button
+          <IconButton 
             type="submit"
-            variant="contained"
-            color="primary"
             disabled={!newMessage.trim() || isLoading}
-            size="medium"
-            endIcon={<SendIcon />}
-          >
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Send'}
-          </Button>
-          <Button variant="outlined"
-            startIcon={<DeleteIcon />}
-            onClick={handleStartNewChat}
-            size="medium"
-          >
-            New Chat
-          </Button>
+            onClick={handleStartNewChat}>
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon color="primary" />}
+          </IconButton>
+          <IconButton onClick={handleStartNewChat}>
+            <AddIcon color="secondary" />
+          </IconButton>
         </Box>
       </form>
     </Container>
