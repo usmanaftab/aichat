@@ -64,66 +64,64 @@ export default function ResetPassword(props: { disableCustomTheme?: boolean }) {
   };
 
   return (
-    <AppTheme {...props}>
-      <CssBaseline enableColorScheme />
-      <AuthContainer direction="column" justifyContent="space-between">
-        <Card variant="outlined">
-          <AutoAwesomeSharpIcon />
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+    <AuthContainer direction="column" justifyContent="space-between">
+      <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
+      <Card variant="outlined">
+        <AutoAwesomeSharpIcon />
+        <Typography
+          component="h1"
+          variant="h4"
+          sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+        >
+          Reset Password
+        </Typography>
+        <Collapse in={error !== ''}>
+          <Alert
+            severity="error"
+            onClose={() => setError('')}
+            sx={{ mb: 2 }}
           >
-             Reset Password
-          </Typography>
-          <Collapse in={error !== ''}>
-            <Alert
-              severity="error"
-              onClose={() => setError('')}
-              sx={{ mb: 2 }}
-            >
-              {error}
-            </Alert>
-          </Collapse>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
-              gap: 2,
-            }}
-          >
-            <FormControl>
-              <FormLabel htmlFor="password">New Password</FormLabel>
-              <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                name="password"
-                placeholder="••••••"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                autoFocus
-                required
-                fullWidth
-                variant="outlined"
-                color={passwordError ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <Button
-              type="submit"
+            {error}
+          </Alert>
+        </Collapse>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            gap: 2,
+          }}
+        >
+          <FormControl>
+            <FormLabel htmlFor="password">New Password</FormLabel>
+            <TextField
+              error={passwordError}
+              helperText={passwordErrorMessage}
+              name="password"
+              placeholder="••••••"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              autoFocus
+              required
               fullWidth
-              variant="contained"
-              onClick={validateInputs}
-            >
-              Reset Password
-            </Button>
-          </Box>
-        </Card>
-      </AuthContainer>
-    </AppTheme>
+              variant="outlined"
+              color={passwordError ? 'error' : 'primary'}
+            />
+          </FormControl>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick={validateInputs}
+          >
+            Reset Password
+          </Button>
+        </Box>
+      </Card>
+    </AuthContainer>
   );
 }

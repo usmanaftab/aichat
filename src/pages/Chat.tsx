@@ -150,69 +150,71 @@ function Chat() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Paper sx={{
-        height: '70vh',
-        mb: 2,
-        overflow: 'auto',
-        p: 2,
-        backgroundColor: (theme) => theme.palette.background.default,
-        boxShadow: (theme) => theme.shadows[3],
-        borderRadius: 2,
-      }}>
-        <List>
-          {messages.map((message) => (
-            <MessageContainer
-              key={message.id}
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: message.userName !== 'LLM (llama3.2)' ? 'flex-end' : 'flex-start'
-              }}
-            >
-              <MessageHeader isUser={message.userName !== 'LLM (llama3.2)'}>
-                <span>{message.userName}</span>
-              </MessageHeader>
-              <MessageHeader isUser={message.userName !== 'LLM (llama3.2)'}>
-                <span>{new Date(message.timestamp).toLocaleTimeString()}</span>
-              </MessageHeader>
-              <MessageBubble isUser={message.userName !== 'LLM (llama3.2)'}>
-                {message.message}
-              </MessageBubble>
-            </MessageContainer>
-          ))}
-        </List>
-      </Paper>
-      <Typography color="secondary" >
-        Maximum 15 requests allowed per day
-        {remainingRequests !== null && (
-          <span>
-            {' '}• {remainingRequests} requests remaining
-          </span>
-        )}
-      </Typography>
-      <form onSubmit={handleSendMessage}>
-        <Box sx={{ display: 'flex', gap: 1, position: 'relative' }}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Type your message..."
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            disabled={isLoading}
-          />
-          <IconButton 
-            type="submit"
-            disabled={!newMessage.trim() || isLoading}
-            onClick={handleSendMessage}>
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon color="primary" />}
-          </IconButton>
-          <IconButton onClick={handleStartNewChat}>
-            <AddIcon color="secondary" />
-          </IconButton>
-        </Box>
-      </form>
-    </Container>
+    <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
+      <Container maxWidth="md" sx={{ mt: 4 }}>
+        <Paper sx={{
+          height: '70vh',
+          mb: 2,
+          overflow: 'auto',
+          p: 2,
+          backgroundColor: (theme) => theme.palette.background.default,
+          boxShadow: (theme) => theme.shadows[3],
+          borderRadius: 2,
+        }}>
+          <List>
+            {messages.map((message) => (
+              <MessageContainer
+                key={message.id}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: message.userName !== 'LLM (llama3.2)' ? 'flex-end' : 'flex-start'
+                }}
+              >
+                <MessageHeader isUser={message.userName !== 'LLM (llama3.2)'}>
+                  <span>{message.userName}</span>
+                </MessageHeader>
+                <MessageHeader isUser={message.userName !== 'LLM (llama3.2)'}>
+                  <span>{new Date(message.timestamp).toLocaleTimeString()}</span>
+                </MessageHeader>
+                <MessageBubble isUser={message.userName !== 'LLM (llama3.2)'}>
+                  {message.message}
+                </MessageBubble>
+              </MessageContainer>
+            ))}
+          </List>
+        </Paper>
+        <Typography color="secondary" >
+          Maximum 15 requests allowed per day
+          {remainingRequests !== null && (
+            <span>
+              {' '}• {remainingRequests} requests remaining
+            </span>
+          )}
+        </Typography>
+        <form onSubmit={handleSendMessage}>
+          <Box sx={{ display: 'flex', gap: 1, position: 'relative' }}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="Type your message..."
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              disabled={isLoading}
+            />
+            <IconButton
+              type="submit"
+              disabled={!newMessage.trim() || isLoading}
+              onClick={handleSendMessage}>
+              {isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon color="primary" />}
+            </IconButton>
+            <IconButton onClick={handleStartNewChat}>
+              <AddIcon color="secondary" />
+            </IconButton>
+          </Box>
+        </form>
+      </Container>
+    </Box>
   );
 }
 

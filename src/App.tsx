@@ -1,39 +1,29 @@
-import React from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Box } from '@mui/material';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import NavigationBar from './components/NavigationBar';
 import AppRoutes from './components/AppRoutes';
 import { GlobalSnackbar } from './components/GlobalSnackbar';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { config } from './config';
+import AppTheme from './pages/shared-theme/AppTheme';
+import { AuthProvider } from './contexts/AuthContext';
+import WelcomePage from './pages/WelcomePage';
+import { useAuth } from './contexts/AuthContext';
 
-const theme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-  },
-});
+function App(props: { disableCustomTheme?: boolean }) {
+  const { isAuthenticated } = useAuth();
 
-function App() {
   return (
-      <NotificationProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Router basename={config.BASE_PATH}>
-            <Box sx={{ flexGrow: 1 }}>
-              <AppRoutes />
-            </Box>
-          </Router>
-          <GlobalSnackbar />
-        </ThemeProvider>
-      </NotificationProvider>
+    <NotificationProvider>
+      <AppTheme {...props}>
+        <CssBaseline enableColorScheme />
+        <Router basename={config.BASE_PATH}>
+          <Box sx={{ flexGrow: 1 }}>
+            {isAuthenticated ? <WelcomePage /> : <AppRoutes />}
+          </Box>
+        </Router>
+        <GlobalSnackbar />
+      </AppTheme>
+    </NotificationProvider>
   );
 }
 

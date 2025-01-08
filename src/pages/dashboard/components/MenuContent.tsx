@@ -9,23 +9,35 @@ import ChatRoundedIcon from '@mui/icons-material/ChatRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import { useNavigate } from 'react-router-dom';
 
 const mainListItems = [
-  { text: 'AI Chat', icon: <ChatRoundedIcon /> },
+  { text: 'AI Chat', icon: <ChatRoundedIcon />, page: '/' },
 ];
 
 const secondaryListItems = [
-  { text: 'About', icon: <InfoRoundedIcon /> },
-  { text: 'Feedback', icon: <HelpRoundedIcon /> },
+  { text: 'About', icon: <InfoRoundedIcon />, page: '/about' },
+  { text: 'Feedback', icon: <HelpRoundedIcon />, page: '/feedback' },
 ];
 
 export default function MenuContent() {
+  const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = React.useState('/');
+
+  const handleItemClick = (page: string) => {
+    setSelectedItem(page);
+    navigate(page);
+  };
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
-        {mainListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton selected={index === 0}>
+        {mainListItems.map((item) => (
+          <ListItem key={item.page} disablePadding sx={{ display: 'block' }}>
+            <ListItemButton 
+              selected={selectedItem === item.page}
+              onClick={() => handleItemClick(item.page)}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
@@ -34,9 +46,12 @@ export default function MenuContent() {
       </List>
 
       <List dense>
-        {secondaryListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton>
+        {secondaryListItems.map((item) => (
+          <ListItem key={item.page} disablePadding sx={{ display: 'block' }}>
+            <ListItemButton
+              selected={selectedItem === item.page}
+              onClick={() => handleItemClick(item.page)}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

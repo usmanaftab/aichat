@@ -7,7 +7,8 @@ import { useNotification } from '../contexts/NotificationContext';
 import NotFound from 'src/pages/NotFound';
 import SignIn from 'src/pages/SignIn';
 import SignUp from 'src/pages/SignUp';
-import Dashboard from 'src/pages/dashboard/Dashboard';
+import About from '../pages/About';
+import Chat from 'src/pages/Chat';
 
 function LoadingScreen() {
   return (
@@ -78,7 +79,12 @@ function AppRoutes() {
       } />
       <Route path="/" element={
         <PrivateRoute>
-          <Dashboard />
+          <Chat />
+        </PrivateRoute>
+      } />
+      <Route path="/about" element={
+        <PrivateRoute>
+          <About />
         </PrivateRoute>
       } />
       <Route path="*" element={<NotFound />} />

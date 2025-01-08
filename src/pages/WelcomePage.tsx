@@ -1,39 +1,40 @@
-import React from 'react';
-import { Container, Typography, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { alpha } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import AppNavbar from './dashboard/components/AppNavbar';
+import Header from './dashboard/components/Header';
+import SideMenu from './dashboard/components/SideMenu';
+import Copyright from './dashboard/internals/components/Copyright';
+import AppRoutes from 'src/components/AppRoutes';
 
-function WelcomePage() {
-  const { isAuthenticated } = useAuth();
-
+export default function Home(props: { disableCustomTheme?: boolean }) {
   return (
-    <Container maxWidth="md" sx={{ mt: 4, textAlign: 'center' }}>
-      <Typography variant="h2" component="h1" gutterBottom>
-        Welcome!
-      </Typography>
-      <Typography variant="h5" component="h2" gutterBottom>
-        {isAuthenticated ? (
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to="/chat"
-          >
-            Start Chat
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to="/login"
-          >
-            Login to Start
-          </Button>
-        )}
-      </Typography>
-    </Container>
+    <Box sx={{ display: 'flex' }}>
+      <SideMenu />
+      <AppNavbar />
+      {/* Main content */}
+      <Box
+        component="main"
+        sx={(theme) => ({
+          flexGrow: 1,
+          backgroundColor: alpha(theme.palette.background.default, 1),
+          overflow: 'auto',
+        })}
+      >
+        <Stack
+          spacing={2}
+          sx={{
+            alignItems: 'center',
+            mx: 3,
+            pb: 5,
+            mt: { xs: 8, md: 0 },
+          }}
+        >
+          <Header />
+          <AppRoutes />
+          <Copyright sx={{ my: 4 }} />
+        </Stack>
+      </Box>
+    </Box>
   );
 }
-
-export default WelcomePage; 

@@ -131,134 +131,131 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   };
 
   return (
-    <AppTheme {...props}>
-      <CssBaseline enableColorScheme />
+    <AuthContainer direction="column" justifyContent="space-between">
       <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
-      <AuthContainer direction="column" justifyContent="space-between">
-        <Card variant="outlined">
-          <AutoAwesomeSharpIcon />
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+      <Card variant="outlined">
+        <AutoAwesomeSharpIcon />
+        <Typography
+          component="h1"
+          variant="h4"
+          sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+        >
+          Sign up
+        </Typography>
+        <Collapse in={error !== ''}>
+          <Alert
+            severity="error"
+            onClose={() => setError('')}
+            sx={{ mb: 2 }}
+          >
+            {error}
+          </Alert>
+        </Collapse>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+        >
+          <FormControl>
+            <FormLabel htmlFor="first_name">First name</FormLabel>
+            <TextField
+              autoComplete="given-name"
+              name="first_name"
+              required
+              fullWidth
+              id="first_name"
+              placeholder="Jon"
+              error={firstNameError}
+              helperText={firstNameErrorMessage}
+              color={firstNameError ? 'error' : 'primary'}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="last_name">Last name</FormLabel>
+            <TextField
+              autoComplete="family-name"
+              name="last_name"
+              required
+              fullWidth
+              id="last_name"
+              placeholder="Snow"
+              error={lastNameError}
+              helperText={lastNameErrorMessage}
+              color={lastNameError ? 'error' : 'primary'}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="email">Email</FormLabel>
+            <TextField
+              required
+              fullWidth
+              id="email"
+              placeholder="your@email.com"
+              name="email"
+              autoComplete="email"
+              variant="outlined"
+              error={emailError}
+              helperText={emailErrorMessage}
+              color={passwordError ? 'error' : 'primary'}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              placeholder="••••••"
+              type="password"
+              id="password"
+              autoComplete="new-password"
+              variant="outlined"
+              error={passwordError}
+              helperText={passwordErrorMessage}
+              color={passwordError ? 'error' : 'primary'}
+            />
+          </FormControl>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick={validateInputs}
           >
             Sign up
-          </Typography>
-          <Collapse in={error !== ''}>
-            <Alert
-              severity="error"
-              onClose={() => setError('')}
-              sx={{ mb: 2 }}
-            >
-              {error}
-            </Alert>
-          </Collapse>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+          </Button>
+        </Box>
+        <Divider>
+          <Typography sx={{ color: 'text.secondary' }}>or</Typography>
+        </Divider>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => alert('Sign up with Google')}
+            startIcon={<GoogleIcon />}
           >
-            <FormControl>
-              <FormLabel htmlFor="first_name">First name</FormLabel>
-              <TextField
-                autoComplete="given-name"
-                name="first_name"
-                required
-                fullWidth
-                id="first_name"
-                placeholder="Jon"
-                error={firstNameError}
-                helperText={firstNameErrorMessage}
-                color={firstNameError ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="last_name">Last name</FormLabel>
-              <TextField
-                autoComplete="family-name"
-                name="last_name"
-                required
-                fullWidth
-                id="last_name"
-                placeholder="Snow"
-                error={lastNameError}
-                helperText={lastNameErrorMessage}
-                color={lastNameError ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                placeholder="your@email.com"
-                name="email"
-                autoComplete="email"
-                variant="outlined"
-                error={emailError}
-                helperText={emailErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                placeholder="••••••"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                variant="outlined"
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={validateInputs}
+            Sign up with Google
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => alert('Sign up with Facebook')}
+            startIcon={<FacebookIcon />}
+          >
+            Sign up with Facebook
+          </Button>
+          <Typography sx={{ textAlign: 'center' }}>
+            Already have an account?{' '}
+            <Link
+              component={RLink} to="/login"
+              variant="body2"
+              sx={{ alignSelf: 'center' }}
             >
-              Sign up
-            </Button>
-          </Box>
-          <Divider>
-            <Typography sx={{ color: 'text.secondary' }}>or</Typography>
-          </Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign up with Google')}
-              startIcon={<GoogleIcon />}
-            >
-              Sign up with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign up with Facebook')}
-              startIcon={<FacebookIcon />}
-            >
-              Sign up with Facebook
-            </Button>
-            <Typography sx={{ textAlign: 'center' }}>
-              Already have an account?{' '}
-              <Link
-                component={RLink} to="/login"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
-                Sign in
-              </Link>
-            </Typography>
-          </Box>
-        </Card>
-      </AuthContainer>
-    </AppTheme>
+              Sign in
+            </Link>
+          </Typography>
+        </Box>
+      </Card>
+    </AuthContainer>
   );
 }

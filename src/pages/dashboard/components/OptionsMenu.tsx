@@ -13,6 +13,8 @@ import MenuButton from './MenuButton';
 import { useNavigate } from 'react-router-dom';
 import { useNotification } from 'src/contexts/NotificationContext';
 import { useAuth } from 'src/contexts/AuthContext';
+import InfoIcon from '@mui/icons-material/Info';
+import { Link } from 'react-router-dom';
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
