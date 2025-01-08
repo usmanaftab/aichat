@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import ResetPassword from '../pages/ResetPassword';
-import Chat from '../pages/Chat';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
 import NotFound from 'src/pages/NotFound';
@@ -75,11 +74,6 @@ function AppRoutes() {
       <Route path="/reset-password" element={
         <PrivateRoute>
           <ResetPassword />
-        </PrivateRoute>
-      } />
-      <Route path="/chat" element={
-        <PrivateRoute>
-          <Chat />
         </PrivateRoute>
       } />
       <Route path="/" element={

@@ -147,7 +147,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       });
       const token = await authService.login({ email: email.value, password: password.value });
       login(token.access_token);
-      navigate('/chat');
+      navigate('/');
     } catch (err: any) {
       if (err.details?.errors) {
         const errors = err.details.errors;
