@@ -72,9 +72,9 @@ function AppRoutes() {
         </PublicRoute>
       } />
       <Route path="/reset-password" element={
-        <PrivateRoute>
+        <PublicRoute>
           <ResetPassword />
-        </PrivateRoute>
+        </PublicRoute>
       } />
       <Route path="/" element={
         <PrivateRoute>
