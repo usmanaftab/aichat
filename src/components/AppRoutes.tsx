@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
-import WelcomePage from '../pages/WelcomePage';
-import Register from '../pages/Register';
 import ResetPassword from '../pages/ResetPassword';
 import Chat from '../pages/Chat';
 import { useAuth } from '../contexts/AuthContext';
@@ -10,6 +8,7 @@ import { useNotification } from '../contexts/NotificationContext';
 import NotFound from 'src/pages/NotFound';
 import SignIn from 'src/pages/SignIn';
 import SignUp from 'src/pages/SignUp';
+import Dashboard from 'src/pages/dashboard/Dashboard';
 
 function LoadingScreen() {
   return (
@@ -81,7 +80,7 @@ function AppRoutes() {
           <Chat />
         </PrivateRoute>
       } />
-      <Route path="/" element={<WelcomePage />} />
+      <Route path="/" element={<Dashboard />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
