@@ -91,7 +91,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (emailError || passwordError) {
+    if (emailError || passwordError || open) {
       return;
     }
 
@@ -214,7 +214,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <ForgotPassword open={open} handleClose={handleClose} />
+            <ForgotPassword open={open} handleClose={handleClose} setError={setError} />
             <Button
               type="submit"
               fullWidth
