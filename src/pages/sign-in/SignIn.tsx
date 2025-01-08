@@ -14,7 +14,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../layout/shared-theme/CustomIcons';
+import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import AppTheme from '../layout/shared-theme/AppTheme';
 import ColorModeSelect from '../layout/shared-theme/ColorModeSelect';
 
