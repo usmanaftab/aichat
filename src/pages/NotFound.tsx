@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Box, Typography, Container } from '@mui/material';
 import { config } from '../config';
 
 const NotFound = () => {
@@ -15,15 +16,27 @@ const NotFound = () => {
   }, [navigate]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
-      <div className="text-center px-4">
-        <h1 className="text-4xl font-bold mb-4 text-primary">404 - Page Not Found</h1>
-        <p className="text-lg mb-4">The page you're looking for doesn't exist.</p>
-        <p className="text-muted-foreground">
-          Redirecting to home page in 3 seconds...
-        </p>
-      </div>
-    </div>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+    >
+      <Container maxWidth="sm">
+        <Box textAlign="center">
+          <Typography variant="h2" color="primary" gutterBottom>
+            404 - Page Not Found
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            The page you're looking for doesn't exist.
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Redirecting to home page in 3 seconds...
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
