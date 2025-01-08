@@ -20,7 +20,7 @@ const MenuItem = styled(MuiMenuItem)({
 
 export default function OptionsMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { logout } = useAuth();
+  const { logout, setLoadingState } = useAuth();
   const navigate = useNavigate();
   const { showSuccess } = useNotification();
 
@@ -34,6 +34,7 @@ export default function OptionsMenu() {
   };
 
   const handleLogout = () => {
+    setLoadingState(true);
     logout();
     navigate('/login');
     showSuccess('You are logged out');

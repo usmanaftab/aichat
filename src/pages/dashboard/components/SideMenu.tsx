@@ -50,8 +50,8 @@ export default function SideMenu() {
           spacing={1}
           sx={{ justifyContent: 'center', mr: 'auto' }}
         >
-          <AutoAwesomeSharpIcon />
-          <Typography variant="h4" component="h1" sx={{ color: 'text.primary' }}>
+          <AutoAwesomeSharpIcon color="primary"/>
+          <Typography variant="h4" component="h1" color="primary" sx={{ fontFamily: 'IBM Plex Sans', fontSize: '0.9rem', fontWeight: '500' }}>
             AI Chat
           </Typography>
         </Stack>

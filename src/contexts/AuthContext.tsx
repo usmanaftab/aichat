@@ -48,16 +48,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const login = (accessToken: any) => {
+    setLoadingState(true);
     setIsAuthenticated(true);
     setToken(accessToken);
     localStorage.setItem('token', accessToken);
-    fetchAndSetUser(accessToken);
+    fetchAndSetUser(accessToken).then(() => setLoadingState(false));
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     setUser(null);
-    setLoading(false);
     setToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');

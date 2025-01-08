@@ -78,7 +78,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
   const [error, setError] = React.useState('');
   const navigate = useNavigate();
-  const { login, setLoadingState } = useAuth();
+  const { login } = useAuth();
   const { showSuccess } = useNotification();
 
   const handleClickOpen = () => {
@@ -106,7 +106,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       try {
         const token = await authService.login({ email: email.value, password: password.value });
 
-        setLoadingState(true);
         login(token.access_token);
         navigate('/');
         showSuccess('You are logged in');

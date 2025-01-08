@@ -21,11 +21,12 @@ interface SideMenuMobileProps {
 }
 
 export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
-  const { user, logout } = useAuth();
+  const { user, logout, setLoadingState } = useAuth();
   const navigate = useNavigate();
   const { showSuccess } = useNotification();
 
   const handleLogout = () => {
+    setLoadingState(true);
     logout();
     navigate('/login');
     showSuccess('You are logged out');

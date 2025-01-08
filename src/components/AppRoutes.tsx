@@ -54,8 +54,10 @@ function AppRoutes() {
   const { setLoadingState } = useAuth();
   const location = useLocation();
 
-   useEffect(() => {
-    setLoadingState(false);
+  useEffect(() => {
+    if (location.pathname.endsWith('/login')) {
+      setLoadingState(false);
+    }
   }, [location]);
 
   return (
