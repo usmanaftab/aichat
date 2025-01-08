@@ -80,7 +80,11 @@ function AppRoutes() {
           <Chat />
         </PrivateRoute>
       } />
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/" element={
+        <PrivateRoute>
+          <Dashboard />
+        </PrivateRoute>
+      } />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

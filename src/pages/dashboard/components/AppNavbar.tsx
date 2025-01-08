@@ -11,6 +11,7 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import SideMenuMobile from './SideMenuMobile';
 import MenuButton from './MenuButton';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
+import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
 
 const Toolbar = styled(MuiToolbar)({
   width: '100%',
@@ -63,9 +64,9 @@ export default function AppNavbar() {
             spacing={1}
             sx={{ justifyContent: 'center', mr: 'auto' }}
           >
-            <CustomIcon />
+            <AutoAwesomeSharpIcon />
             <Typography variant="h4" component="h1" sx={{ color: 'text.primary' }}>
-              Dashboard
+              AI Chat
             </Typography>
           </Stack>
           <ColorModeIconDropdown />

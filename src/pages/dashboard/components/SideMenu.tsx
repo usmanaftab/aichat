@@ -6,9 +6,9 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import SelectContent from './SelectContent';
 import MenuContent from './MenuContent';
 import OptionsMenu from './OptionsMenu';
+import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
 
 import { useAuth } from 'src/contexts/AuthContext';
 
@@ -45,7 +45,16 @@ export default function SideMenu() {
           p: 1.5,
         }}
       >
-        <SelectContent />
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ justifyContent: 'center', mr: 'auto' }}
+        >
+          <AutoAwesomeSharpIcon />
+          <Typography variant="h4" component="h1" sx={{ color: 'text.primary' }}>
+            AI Chat
+          </Typography>
+        </Stack>
       </Box>
       <Divider />
       <MenuContent />

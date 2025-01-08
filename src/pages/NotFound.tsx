@@ -15,12 +15,14 @@ const NotFound = () => {
   }, [navigate]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold mb-4">404 - Page Not Found</h1>
-      <p className="text-lg mb-4">The page you're looking for doesn't exist.</p>
-      <p className="text-gray-600">
-        Redirecting to home page in 3 seconds...
-      </p>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
+      <div className="text-center px-4">
+        <h1 className="text-4xl font-bold mb-4 text-primary">404 - Page Not Found</h1>
+        <p className="text-lg mb-4">The page you're looking for doesn't exist.</p>
+        <p className="text-muted-foreground">
+          Redirecting to home page in 3 seconds...
+        </p>
+      </div>
     </div>
   );
 };
