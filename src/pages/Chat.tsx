@@ -204,7 +204,7 @@ function Chat() {
           <IconButton 
             type="submit"
             disabled={!newMessage.trim() || isLoading}
-            onClick={handleStartNewChat}>
+            onClick={handleSendMessage}>
             {isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon color="primary" />}
           </IconButton>
           <IconButton onClick={handleStartNewChat}>
