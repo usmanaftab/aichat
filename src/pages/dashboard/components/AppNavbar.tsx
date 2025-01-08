@@ -64,10 +64,10 @@ export default function AppNavbar() {
             spacing={1}
             sx={{ justifyContent: 'center', mr: 'auto' }}
           >
-            <AutoAwesomeSharpIcon />
-            <Typography variant="h4" component="h1" sx={{ color: 'text.primary' }}>
-              AI Chat
-            </Typography>
+          <AutoAwesomeSharpIcon />
+          <Typography variant="h6">
+            AI Chat
+          </Typography>
           </Stack>
           <ColorModeIconDropdown />
           <MenuButton aria-label="menu" onClick={toggleDrawer(true)}>
