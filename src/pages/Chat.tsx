@@ -53,7 +53,7 @@ const MessageHeader = styled('div')<{ isUser: boolean }>(({ isUser }) => ({
 function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const { logout, user , token, isAuthenticated, loading } = useAuth();
+  const { logout, user, token, isAuthenticated, loading } = useAuth();
   const userName = user?.fullName() || 'Anonymous'; // You can replace this with actual user name from your auth system
   const [isLoading, setIsLoading] = useState(false);
   const { showError } = useNotification();
@@ -106,7 +106,7 @@ function Chat() {
         if (!token) {
           showError('You are not logged in');
           return;
-        } 
+        }
 
         // Getting response from LLM
         const message = await chatService.sendMessage(newMessage, token);
@@ -170,7 +170,7 @@ function Chat() {
           mb: 2,
           overflow: 'auto',
           p: 2,
-          backgroundColor: (theme) => theme.palette.background.default,
+          backgroundColor: (theme) => theme.palette.background.paper,
           boxShadow: (theme) => theme.shadows[3],
           borderRadius: 2,
         }}>
