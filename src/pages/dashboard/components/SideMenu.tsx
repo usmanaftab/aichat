@@ -31,7 +31,7 @@ const Drawer = styled(MuiDrawer)({
 
 export default function SideMenu() {
   const { user, isAuthenticated } = useAuth();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(true);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setDrawerOpen(newOpen);
