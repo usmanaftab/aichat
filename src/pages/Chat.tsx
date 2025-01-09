@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { chatService, Message } from '../services/chatService';
+import AddIcon from '@mui/icons-material/Add';
+import SendIcon from '@mui/icons-material/Send';
 import {
-  Container,
   Box,
-  Paper,
-  TextField,
+  Button,
+  CircularProgress,
+  Container,
+  IconButton,
   List,
   ListItem,
-  Button,
-  Theme,
-  CircularProgress,
-  Typography,
-  IconButton,
+  Paper,
+  TextField,
+  Typography
 } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { chatService, Message } from '../services/chatService';
 import LoadingScreen from './shared-theme/loadingScreen';
 
 const MessageBubble = styled('div')<{ isUser: boolean }>(({ theme, isUser }) => ({
@@ -191,7 +191,7 @@ function Chat() {
                   <span>{new Date(message.timestamp).toLocaleTimeString()}</span>
                 </MessageHeader>
                 <MessageBubble isUser={message.userName !== 'LLM (llama3.2)'}>
-                  {message.message}
+                  <ReactMarkdown>{message.message}</ReactMarkdown>
                 </MessageBubble>
               </MessageContainer>
             ))}
