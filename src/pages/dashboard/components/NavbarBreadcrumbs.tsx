@@ -51,7 +51,9 @@ export default function NavbarBreadcrumbs() {
       separator={<NavigateNextRoundedIcon fontSize="small" />}
     >
       {breadcrumbs.map((item, index) => (
-        index === breadcrumbs.length - 1 ? <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: '500' }}> {item.label} </Typography> : <Typography variant="body2" > {item.label} </Typography>
+        index === breadcrumbs.length - 1 ? 
+          <Typography key={index} variant="body2" sx={{ color: 'text.primary', fontWeight: '500' }}> {item.label} </Typography>
+          : <Typography key={index} variant="body2" > {item.label} </Typography>
       ))}
     </StyledBreadcrumbs>
   );

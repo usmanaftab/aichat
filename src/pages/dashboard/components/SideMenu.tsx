@@ -73,9 +73,9 @@ export default function SideMenu() {
             AI Chat
           </Typography>
           <Box sx={{ flexGrow: 1 }}></Box>
-          <MenuButton onClick={toggleDrawer(false)}>
+          {/* <MenuButton onClick={toggleDrawer(false)}>
             <ChevronLeftIcon />
-          </MenuButton>
+          </MenuButton> */}
         </Stack>
       </Box>
       <Divider />
