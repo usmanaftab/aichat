@@ -12,7 +12,7 @@ import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { useNavigate } from 'react-router-dom';
 
 const mainListItems = [
-  { text: 'AI Chat', icon: <ChatRoundedIcon />, page: '/' },
+  { text: 'Chat', icon: <ChatRoundedIcon />, page: '/' },
 ];
 
 const secondaryListItems = [
