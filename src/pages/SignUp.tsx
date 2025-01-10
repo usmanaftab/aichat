@@ -1,26 +1,22 @@
-import * as React from 'react';
+import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
+import { Alert, Collapse } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import AppTheme from './shared-theme/AppTheme';
-import { GoogleIcon, FacebookIcon } from './shared-theme/CustomIcons';
-import ColorModeSelect from './shared-theme/ColorModeSelect';
-import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
-
-import { Link as RLink, useNavigate} from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
+import * as React from 'react';
+import { Link as RLink, useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/contexts/AuthContext';
+import { useNotification } from 'src/contexts/NotificationContext';
 import { authService } from 'src/services/authService';
-import { Alert, Collapse } from '@mui/material';
-import { Card, AuthContainer } from './shared-theme/shared-styles';
+import ColorModeSelect from './shared-theme/ColorModeSelect';
+import { GoogleIcon } from './shared-theme/CustomIcons';
+import { AuthContainer, Card } from './shared-theme/shared-styles';
 
 export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [error, setError] = React.useState('');
@@ -35,6 +31,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { showSuccess } = useNotification();
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -105,6 +102,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       const token = await authService.login({ email: email.value, password: password.value });
       login(token.access_token);
       navigate('/');
+      showSuccess('Your account has been created');
     } catch (err: any) {
       if (err.details?.errors) {
         const errors = err.details.errors;
@@ -113,7 +111,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           setEmailErrorMessage(errors.email);
         }
         if (errors.password) {
-          setPasswordError(true); 
+          setPasswordError(true);
           setPasswordErrorMessage(errors.password);
         }
         if (errors.first_name) {
@@ -129,6 +127,27 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       }
     }
   };
+
+  const handleGoogleLoginSuccess = async (response: any) => {
+    try {
+      const { access_token } = response;
+      const token = await authService.googleLogin(access_token);
+      login(token.access_token);
+      navigate('/');
+      showSuccess('You are logged in');
+    } catch (err) {
+      setError('Failed to sign in with Google');
+    }
+  };
+
+  const handleGoogleLoginFailure = () => {
+    setError('Failed to sign in with Google');
+  };
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginFailure,
+  });
 
   return (
     <AuthContainer direction="column" justifyContent="space-between">
@@ -231,18 +250,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => alert('Sign up with Google')}
+            onClick={() => handleGoogleLogin()}
             startIcon={<GoogleIcon />}
           >
-            Sign up with Google
-          </Button>
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={() => alert('Sign up with Facebook')}
-            startIcon={<FacebookIcon />}
-          >
-            Sign up with Facebook
+            Sign in with Google
           </Button>
           <Typography sx={{ textAlign: 'center' }}>
             Already have an account?{' '}
