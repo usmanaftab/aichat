@@ -1,32 +1,27 @@
-import * as React from 'react';
+import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
+import { Collapse } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import MuiCard from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
+import * as React from 'react';
 import ForgotPassword from './ForgotPassword';
-import { GoogleIcon, FacebookIcon } from './shared-theme/CustomIcons';
-import AppTheme from './shared-theme/AppTheme';
 import ColorModeSelect from './shared-theme/ColorModeSelect';
-import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
-import Alert from '@mui/material/Alert';
-import { Collapse } from '@mui/material';
-import { Card, AuthContainer } from './shared-theme/shared-styles';
+import { FacebookIcon, GoogleIcon } from './shared-theme/CustomIcons';
+import { AuthContainer, Card } from './shared-theme/shared-styles';
 
-import { Link as RLink} from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
+import { useGoogleLogin } from '@react-oauth/google';
+import { Link as RLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
+import { authService } from '../services/authService';
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [emailError, setEmailError] = React.useState(false);
@@ -34,7 +29,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
-
   const [error, setError] = React.useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -61,16 +55,16 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       password: password.value,
     });
 
-      event.preventDefault();
-      try {
-        const token = await authService.login({ email: email.value, password: password.value });
+    event.preventDefault();
+    try {
+      const token = await authService.login({ email: email.value, password: password.value });
 
-        login(token.access_token);
-        navigate('/');
-        showSuccess('You are logged in');
-      } catch (err) {
-        setError('Invalid email or password');
-      }
+      login(token.access_token);
+      navigate('/');
+      showSuccess('You are logged in');
+    } catch (err) {
+      setError('Invalid email or password');
+    }
   };
 
   const validateInputs = () => {
@@ -99,6 +93,27 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     return isValid;
   };
+
+  const handleGoogleLoginSuccess = async (response: any) => {
+    try {
+      const { access_token } = response;
+      const token = await authService.googleLogin(access_token);
+      login(token.access_token);
+      navigate('/');
+      showSuccess('You are logged in');
+    } catch (err) {
+      setError('Failed to sign in with Google');
+    }
+  };
+
+  const handleGoogleLoginFailure = () => {
+    setError('Failed to sign in with Google');
+  };
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginFailure,
+  });
 
   return (
     <AuthContainer direction="column" justifyContent="space-between">
@@ -194,7 +209,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => alert('Sign in with Google')}
+            onClick={() => handleGoogleLogin()}
             startIcon={<GoogleIcon />}
           >
             Sign in with Google

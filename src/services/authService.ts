@@ -53,12 +53,12 @@ export const authService = {
       credentials: 'include',
       mode: 'cors',
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new AuthError(error.message || 'Registration failed', response.status, error);
     }
-    
+
     return response.json();
   },
 
@@ -69,12 +69,12 @@ export const authService = {
       body: JSON.stringify({ email }),
       mode: 'cors',
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new AuthError(error.message || 'Failed to process forgot password request', response.status, error);
     }
-    
+
     return response.json();
   },
 
@@ -85,17 +85,29 @@ export const authService = {
       body: JSON.stringify({ token, password }),
       mode: 'cors',
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new AuthError(error.message || 'Failed to reset password', response.status, error);
     }
-    
+
     return response.json();
   },
 
-  async googleLogin() {
-    window.location.href = `${config.API_URL}/oauth/google`;
+  async googleLogin(access_token: string) {
+    const response = await fetch(`${config.API_URL}/auth/oauth/google`, {
+      method: 'POST',
+      headers: defaultHeaders,
+      body: JSON.stringify({ token: access_token }),
+      mode: 'cors',
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to sign in with Google');
+    }
+
+    return response.json();
   },
 
   async getUser(token: string) {
@@ -112,4 +124,4 @@ export const authService = {
 
     return await response.json();
   },
-}; 
+};
