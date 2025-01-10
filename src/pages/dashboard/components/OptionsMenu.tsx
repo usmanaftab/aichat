@@ -1,20 +1,18 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import Divider, { dividerClasses } from '@mui/material/Divider';
+import { listClasses } from '@mui/material/List';
+import ListItemIcon, { listItemIconClasses } from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
 import { paperClasses } from '@mui/material/Paper';
-import { listClasses } from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon, { listItemIconClasses } from '@mui/material/ListItemIcon';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import MenuButton from './MenuButton';
+import { styled } from '@mui/material/styles';
+import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from 'src/contexts/NotificationContext';
 import { useAuth } from 'src/contexts/AuthContext';
-import InfoIcon from '@mui/icons-material/Info';
-import { Link } from 'react-router-dom';
+import { useNotification } from 'src/contexts/NotificationContext';
+import MenuButton from './MenuButton';
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
@@ -41,6 +39,11 @@ export default function OptionsMenu() {
     navigate('/login');
     showSuccess('You are logged out');
   };
+
+  const handleProfileClick = () => {
+    handleClose();
+    navigate('/me');
+  }
 
   return (
     <React.Fragment>
@@ -71,7 +74,7 @@ export default function OptionsMenu() {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
         <Divider />
         <MenuItem
           onClick={handleClose}

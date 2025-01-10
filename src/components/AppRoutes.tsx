@@ -1,47 +1,48 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import ResetPassword from '../pages/ResetPassword';
-import { useAuth } from '../contexts/AuthContext';
-import { useNotification } from '../contexts/NotificationContext';
-import NotFound from 'src/pages/NotFound';
-import SignIn from 'src/pages/SignIn';
-import SignUp from 'src/pages/SignUp';
-import About from '../pages/About';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Chat from 'src/pages/Chat';
 import Feedback from 'src/pages/Feedback';
+import NotFound from 'src/pages/NotFound';
 import LoadingScreen from 'src/pages/shared-theme/loadingScreen';
 import MainLayout from 'src/pages/shared-theme/MainLayout';
+import SignIn from 'src/pages/SignIn';
+import SignUp from 'src/pages/SignUp';
+import UserProfile from 'src/pages/UserProfile';
+import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
+import About from '../pages/About';
+import ResetPassword from '../pages/ResetPassword';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
-    const { isAuthenticated, user, token, loading } = useAuth();
-    const { showError } = useNotification();
+  const { isAuthenticated, user, token, loading } = useAuth();
+  const { showError } = useNotification();
 
-    if (loading) {
-      return <LoadingScreen />;
-    }
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
-    if (!isAuthenticated || !token || !user) {
-        showError('You are not logged in');
-        return <Navigate to="/login" />;
-    }
+  if (!isAuthenticated || !token || !user) {
+    showError('You are not logged in');
+    return <Navigate to="/login" />;
+  }
 
-    return <>{children}</>;
+  return <>{children}</>;
 }
 
 function PublicRoute({ children }: { children: React.ReactNode }) {
-    const { isAuthenticated, loading } = useAuth();
-    const { showError } = useNotification();
+  const { isAuthenticated, loading } = useAuth();
+  const { showError } = useNotification();
 
-    if (loading) {
-      return <LoadingScreen />;
-    }
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
-    if (isAuthenticated) {  
-        showError('You are already logged in');
-        return <Navigate to="/" />;
-    }
+  if (isAuthenticated) {
+    showError('You are already logged in');
+    return <Navigate to="/" />;
+  }
 
-    return <>{children}</>;
+  return <>{children}</>;
 }
 
 function AppRoutes() {
@@ -56,10 +57,11 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={ <MainLayout /> }>
-        <Route index element={ <Chat /> } />
-        <Route path="/about" element={ <About /> } />
-        <Route path="/feedback" element={ <Feedback /> } />
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Chat />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/feedback" element={<Feedback />} />
+        <Route path="/me" element={<UserProfile />} />
       </Route>
       <Route path="/login" element={
         <PublicRoute>
@@ -81,4 +83,4 @@ function AppRoutes() {
   );
 }
 
-export default AppRoutes; 
+export default AppRoutes;

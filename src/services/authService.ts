@@ -109,19 +109,4 @@ export const authService = {
 
     return response.json();
   },
-
-  async getUser(token: string) {
-    const response = await fetch(`${config.API_URL}/users/profile`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new AuthError(error.message || 'Failed to fetch user profile', response.status, error);
-    }
-
-    return await response.json();
-  },
 };

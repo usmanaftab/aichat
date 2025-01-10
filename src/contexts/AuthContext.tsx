@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService } from '../services/authService';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { userService } from 'src/services/userService';
 
 interface User {
   first_name: string;
@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const fetchAndSetUser = async (accessToken: any) => {
-    const userData = await authService.getUser(accessToken);
+    const userData = await userService.getUser(accessToken);
     const userWithFullName = {
       ...userData,
       fullName: createFullNameFunction(userData.first_name, userData.last_name)
@@ -70,27 +70,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-        setIsAuthenticated(true);
-        const userData = JSON.parse(storedUser)
-        const userWithFullName = {
-          ...userData,
-          fullName: createFullNameFunction(userData.first_name, userData.last_name)
-        };
-        setUser(userWithFullName);
+      setIsAuthenticated(true);
+      const userData = JSON.parse(storedUser)
+      const userWithFullName = {
+        ...userData,
+        fullName: createFullNameFunction(userData.first_name, userData.last_name)
+      };
+      setUser(userWithFullName);
     }
 
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
     }
-    
+
     setLoading(false);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ 
-      isAuthenticated: !!token, 
-      user, 
+    <AuthContext.Provider value={{
+      isAuthenticated: !!token,
+      user,
       token,
       loading,
       login,
