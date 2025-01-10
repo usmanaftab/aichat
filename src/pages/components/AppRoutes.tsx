@@ -8,10 +8,10 @@ import MainLayout from 'src/pages/shared-theme/MainLayout';
 import SignIn from 'src/pages/SignIn';
 import SignUp from 'src/pages/SignUp';
 import UserProfile from 'src/pages/UserProfile';
-import { useAuth } from '../contexts/AuthContext';
-import { useNotification } from '../contexts/NotificationContext';
-import About from '../pages/About';
-import ResetPassword from '../pages/ResetPassword';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNotification } from '../../contexts/NotificationContext';
+import About from '../About';
+import ResetPassword from '../ResetPassword';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, user, token, loading } = useAuth();

@@ -1,12 +1,11 @@
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import { alpha } from '@mui/material/styles';
+import { Outlet } from 'react-router-dom';
+import Copyright from '../components/Copyright';
 import AppNavbar from '../dashboard/components/AppNavbar';
 import Header from '../dashboard/components/Header';
 import SideMenu from '../dashboard/components/SideMenu';
-import Copyright from '../dashboard/internals/components/Copyright';
-import AppRoutes from 'src/components/AppRoutes';
-import { Outlet } from 'react-router-dom';
 
 export default function Home(props: { disableCustomTheme?: boolean }) {
   return (

@@ -1,11 +1,11 @@
 import { Box, CssBaseline } from '@mui/material';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter as Router } from 'react-router-dom';
-import AppRoutes from './components/AppRoutes';
-import { GlobalSnackbar } from './components/GlobalSnackbar';
 import { config } from './config';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
+import AppRoutes from './pages/components/AppRoutes';
+import { GlobalSnackbar } from './pages/components/GlobalSnackbar';
 import AppTheme from './pages/shared-theme/AppTheme';
 
 function App(props: { disableCustomTheme?: boolean }) {
