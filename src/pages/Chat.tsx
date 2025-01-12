@@ -13,7 +13,7 @@ import {
   Typography
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -53,6 +53,7 @@ const MessageHeader = styled('div')<{ isUser: boolean }>(({ isUser }) => ({
 function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const lastMessageRef = useRef<null | HTMLDivElement>(null);
   const { logout, user, token, isAuthenticated, loading } = useAuth();
   const userName = user?.fullName() || 'Anonymous'; // You can replace this with actual user name from your auth system
   const [isLoading, setIsLoading] = useState(false);
@@ -95,18 +96,23 @@ function Chat() {
     if (remainingRequests) {
       setRemainingRequests(parseInt(remainingRequests));
     }
+
+    // Scroll to last message
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newMessage.trim()) {
       try {
-        setIsLoading(true);
-
         if (!token) {
           showError('You are not logged in');
           return;
         }
+
+        setIsLoading(true);
 
         // Getting response from LLM
         const message = await chatService.sendMessage(newMessage, token);
@@ -173,9 +179,10 @@ function Chat() {
           backgroundColor: (theme) => theme.palette.background.paper,
           boxShadow: (theme) => theme.shadows[3],
           borderRadius: 2,
+          elevation: 1,
         }}>
           <List>
-            {messages.map((message) => (
+            {messages.map((message, index) => (
               <MessageContainer
                 key={message.id}
                 sx={{
@@ -190,7 +197,10 @@ function Chat() {
                 <MessageHeader isUser={message.userName !== 'LLM (llama3.2)'}>
                   <span>{new Date(message.timestamp).toLocaleTimeString()}</span>
                 </MessageHeader>
-                <MessageBubble isUser={message.userName !== 'LLM (llama3.2)'}>
+                <MessageBubble
+                  isUser={message.userName !== 'LLM (llama3.2)'}
+                  ref={index === messages.length - 2 ? lastMessageRef : null}
+                >
                   <ReactMarkdown>{message.message}</ReactMarkdown>
                 </MessageBubble>
               </MessageContainer>
