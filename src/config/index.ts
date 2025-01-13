@@ -11,7 +11,7 @@ const development: Config = {
 };
 
 const production: Config = {
-  API_URL: 'http://usmanaftab-aichat.eu-west-1.elasticbeanstalk.com/api',
+  API_URL: 'https://aichat-server.usmanaftab.com/api',
   BASE_PATH: '/my-app/',
   NOT_FOUND_REDIRECT: '/',
 };
