@@ -11,6 +11,7 @@ import UserProfile from 'src/pages/UserProfile';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../contexts/NotificationContext';
 import About from '../About';
+import PrivacyPolicy from '../Privacy';
 import ResetPassword from '../ResetPassword';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
@@ -61,6 +62,7 @@ function AppRoutes() {
         <Route index element={<Chat />} />
         <Route path="/about" element={<About />} />
         <Route path="/feedback" element={<Feedback />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/me" element={<UserProfile />} />
       </Route>
       <Route path="/login" element={

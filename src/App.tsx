@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import AppRoutes from './pages/components/AppRoutes';
 import { GlobalSnackbar } from './pages/components/GlobalSnackbar';
+import CookieConsentBanner from './pages/CookieConsent';
 import AppTheme from './pages/shared-theme/AppTheme';
 
 function App(props: { disableCustomTheme?: boolean }) {
@@ -18,6 +19,7 @@ function App(props: { disableCustomTheme?: boolean }) {
           <CssBaseline enableColorScheme />
           <Router basename={config.BASE_PATH}>
             <Box sx={{ flexGrow: 1 }}>
+              <CookieConsentBanner />
               <AppRoutes />
             </Box>
           </Router>

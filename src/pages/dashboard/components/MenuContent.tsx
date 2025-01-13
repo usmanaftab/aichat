@@ -1,14 +1,14 @@
-import * as React from 'react';
+import { PrivacyTipRounded } from '@mui/icons-material';
+import ChatRoundedIcon from '@mui/icons-material/ChatRounded';
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
-import ChatRoundedIcon from '@mui/icons-material/ChatRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const mainListItems = [
@@ -18,6 +18,7 @@ const mainListItems = [
 const secondaryListItems = [
   { text: 'About', icon: <InfoRoundedIcon />, page: '/about' },
   { text: 'Feedback', icon: <HelpRoundedIcon />, page: '/feedback' },
+  { text: 'Privacy Policy', icon: <PrivacyTipRounded />, page: '/privacy' },
 ];
 
 export default function MenuContent() {
@@ -34,7 +35,7 @@ export default function MenuContent() {
       <List dense>
         {mainListItems.map((item) => (
           <ListItem key={item.page} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton 
+            <ListItemButton
               selected={selectedItem === item.page}
               onClick={() => handleItemClick(item.page)}
             >
