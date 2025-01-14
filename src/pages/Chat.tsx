@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
 import { chatService, Message } from '../services/chatService';
+import About from './About';
 import LoadingScreen from './shared-theme/loadingScreen';
 
 const MessageBubble = styled('div')<{ isUser: boolean }>(({ theme, isUser }) => ({
@@ -162,9 +163,12 @@ function Chat() {
 
   if (!isAuthenticated) {
     return (
-      <Button variant="contained" color="primary" onClick={() => navigate('/login')}>
-        Sign In to chat
-      </Button>
+      <React.Fragment>
+        <About />
+        <Button variant="contained" color="primary" onClick={() => navigate('/login')}>
+          Sign In to chat with AI
+        </Button>
+      </React.Fragment>
     );
   }
 

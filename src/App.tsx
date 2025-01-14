@@ -6,8 +6,8 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import AppRoutes from './pages/components/AppRoutes';
 import { GlobalSnackbar } from './pages/components/GlobalSnackbar';
-import CookieConsentBanner from './pages/CookieConsent';
 import AppTheme from './pages/shared-theme/AppTheme';
+import CookieConsentBanner from './pages/shared-theme/CookieConsent';
 
 function App(props: { disableCustomTheme?: boolean }) {
   const { isAuthenticated } = useAuth();

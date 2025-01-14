@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Slide, Typography } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -25,7 +25,9 @@ const CookieConsentBanner: React.FC = () => {
 
   // Hide banner when consent is given
   const handleAccept = () => {
-    localStorage.setItem('cookie-consent', 'true');
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 30);
+    localStorage.setItem('cookie-consent', JSON.stringify({ value: 'true', expiry: expiryDate.toISOString() }));
     setIsVisible(false);
   };
 
@@ -36,7 +38,8 @@ const CookieConsentBanner: React.FC = () => {
       TransitionComponent={Transition}
       open={isVisible}
     >
-      <DialogTitle>Your Privacy</DialogTitle>
+      <DialogTitle variant='h3'>Your Privacy</DialogTitle>
+      <Divider />
       <DialogContent dividers>
         <Typography gutterBottom>
           Welcome to AI Chat! We're glad you're here and want you to know that we respect your privacy and your right to control how we collect, process, and use your personal data.
@@ -44,9 +47,12 @@ const CookieConsentBanner: React.FC = () => {
           For more information, please see our <Link to="/privacy" target='_black'>privacy policy</Link>.
         </Typography>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleAccept}>Ok</Button>
-      </DialogActions>
+      <Divider />
+      <Typography variant='h3' gutterBottom>
+        <DialogActions>
+          <Button onClick={handleAccept}>Ok</Button>
+        </DialogActions>
+      </Typography>
     </Dialog >
   );
 };
