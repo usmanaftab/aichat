@@ -1,4 +1,3 @@
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -7,7 +6,6 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { AIChatLogo } from '../../components/CustomIcons';
-import MenuButton from './MenuButton';
 import MenuContent from './MenuContent';
 import OptionsMenu from './OptionsMenu';
 
@@ -39,9 +37,6 @@ export default function SideMenu() {
 
   return (
     <Box>
-      <MenuButton onClick={toggleDrawer(true)} sx={{ mt: 1, ml: 1 }}>
-        <MenuRoundedIcon />
-      </MenuButton>
       <Drawer
         variant="persistent"
         anchor='left'
