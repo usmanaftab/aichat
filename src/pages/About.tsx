@@ -28,7 +28,7 @@ const About = () => {
               <Box>
                 <Typography variant="h6">Engage with AI</Typography>
                 <Typography variant="body2" color="textSecondary">
-                  Interact with an intelligent AI model designed for meaningful and dynamic conversations. Each user is allowed up to <strong>15 requests per day</strong>, giving you the freedom to explore the AI's full potential.
+                  Interact with an intelligent AI model <strong>(Meta Llama 3.2)</strong> designed for meaningful and dynamic conversations. Each user is allowed up to <strong>15 requests per day</strong>, giving you the freedom to explore the AI's full potential.
                 </Typography>
               </Box>
             </Grid2>
