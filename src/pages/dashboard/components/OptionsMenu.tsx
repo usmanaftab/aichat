@@ -1,3 +1,4 @@
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import Divider, { dividerClasses } from '@mui/material/Divider';
@@ -34,6 +35,7 @@ export default function OptionsMenu() {
   };
 
   const handleLogout = () => {
+    handleClose();
     setLoadingState(true);
     logout();
     navigate('/login');
@@ -74,10 +76,8 @@ export default function OptionsMenu() {
           },
         }}
       >
-        <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-        <Divider />
         <MenuItem
-          onClick={handleClose}
+          onClick={handleProfileClick}
           sx={{
             [`& .${listItemIconClasses.root}`]: {
               ml: 'auto',
@@ -85,8 +85,23 @@ export default function OptionsMenu() {
             },
           }}
         >
-          <ListItemText onClick={handleLogout} sx={{ minWidth: 100 }}>Logout</ListItemText>
-          <ListItemIcon onClick={handleLogout}>
+          <ListItemText sx={{ minWidth: 100 }}>Profile</ListItemText>
+          <ListItemIcon>
+            <AccountCircleRoundedIcon fontSize="small" />
+          </ListItemIcon>
+        </MenuItem>
+        <Divider />
+        <MenuItem
+          onClick={handleLogout}
+          sx={{
+            [`& .${listItemIconClasses.root}`]: {
+              ml: 'auto',
+              minWidth: 0,
+            },
+          }}
+        >
+          <ListItemText sx={{ minWidth: 100 }}>Logout</ListItemText>
+          <ListItemIcon>
             <LogoutRoundedIcon fontSize="small" />
           </ListItemIcon>
         </MenuItem>

@@ -1,16 +1,16 @@
-import * as React from 'react';
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MenuContent from './MenuContent';
 
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from 'src/contexts/NotificationContext';
 import { useAuth } from 'src/contexts/AuthContext';
+import { useNotification } from 'src/contexts/NotificationContext';
 
 interface SideMenuMobileProps {
   open: boolean | undefined;
@@ -18,7 +18,7 @@ interface SideMenuMobileProps {
 }
 
 export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
-  const { user, logout, setLoadingState, isAuthenticated} = useAuth();
+  const { user, logout, setLoadingState, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { showSuccess } = useNotification();
 
@@ -28,6 +28,15 @@ export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobilePro
     navigate('/login');
     showSuccess('You are logged out');
   };
+
+  const handleMenuClick = () => {
+    toggleDrawer(false)();
+  }
+
+  const handlePrfoileClick = () => {
+    toggleDrawer(false)();
+    navigate('/me');
+  }
 
   return (
     <Drawer
@@ -66,10 +75,13 @@ export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobilePro
         </Stack>
         <Divider />
         <Stack sx={{ flexGrow: 1 }}>
-          <MenuContent />
+          <MenuContent onclick={handleMenuClick} />
           <Divider />
         </Stack>
         <Stack sx={{ p: 2 }} visibility={isAuthenticated ? 'visible' : 'hidden'}>
+          <Button sx={{ mb: 2 }} onClick={handlePrfoileClick} variant="outlined" fullWidth startIcon={<AccountCircleRoundedIcon />}>
+            Profile
+          </Button>
           <Button onClick={handleLogout} variant="outlined" fullWidth startIcon={<LogoutRoundedIcon />}>
             Logout
           </Button>

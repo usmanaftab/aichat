@@ -11,6 +11,10 @@ import Stack from '@mui/material/Stack';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+interface MenuContentProps {
+  onclick?: () => void;
+}
+
 const mainListItems = [
   { text: 'Chat', icon: <ChatRoundedIcon />, page: '/' },
 ];
@@ -21,13 +25,14 @@ const secondaryListItems = [
   { text: 'Privacy Policy', icon: <PrivacyTipRounded />, page: '/privacy' },
 ];
 
-export default function MenuContent() {
+export default function MenuContent({ onclick }: MenuContentProps) {
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = React.useState('/');
 
   const handleItemClick = (page: string) => {
     setSelectedItem(page);
     navigate(page);
+    onclick && onclick();
   };
 
   return (
