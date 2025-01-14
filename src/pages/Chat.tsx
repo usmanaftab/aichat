@@ -258,6 +258,7 @@ function Chat() {
               onChange={(e) => setNewMessage(e.target.value)}
               disabled={isLoading}
               inputRef={inputRef}
+              sx={{ fontSize: 16 }}
             />
             <IconButton
               type="submit"
