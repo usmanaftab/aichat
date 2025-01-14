@@ -64,7 +64,7 @@ function Chat() {
 
   useEffect(() => {
     const loadMessages = () => {
-      const savedMessages = localStorage.getItem('chatMessages');
+      const savedMessages = sessionStorage.getItem('chatMessages');
       if (savedMessages) {
         try {
           const parsedMessages = JSON.parse(savedMessages);
@@ -75,7 +75,7 @@ function Chat() {
         } catch (error) {
           console.error('Error parsing saved messages:', error);
           // If there's an error parsing, clear the corrupted data
-          localStorage.removeItem('chatMessages');
+          sessionStorage.removeItem('chatMessages');
         }
       }
     };
@@ -87,10 +87,10 @@ function Chat() {
   useEffect(() => {
     // Only save if we have messages to save
     if (messages.length > 0) {
-      localStorage.setItem('chatMessages', JSON.stringify(messages));
+      sessionStorage.setItem('chatMessages', JSON.stringify(messages));
     } else {
-      // If messages array is empty, remove the item from localStorage
-      localStorage.removeItem('chatMessages');
+      // If messages array is empty, remove the item from sessionStorage
+      sessionStorage.removeItem('chatMessages');
     }
 
     const remainingRequests = sessionStorage.getItem('remainingRequests');
@@ -153,7 +153,7 @@ function Chat() {
   const handleStartNewChat = () => {
     setMessages([]);
     sessionStorage.removeItem('contextId');
-    // This will trigger the useEffect that saves to localStorage,
+    // This will trigger the useEffect that saves to sessionStorage,
     // automatically clearing stored messages as well
   };
 

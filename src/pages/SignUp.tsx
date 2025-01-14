@@ -1,4 +1,4 @@
-import { Alert, Collapse } from '@mui/material';
+import { Alert, Checkbox, Collapse, FormControlLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -38,6 +38,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const password = document.getElementById('password') as HTMLInputElement;
     const firstName = document.getElementById('first_name') as HTMLInputElement;
     const lastName = document.getElementById('last_name') as HTMLInputElement;
+    const privacy = document.getElementById('privacy') as HTMLInputElement;
 
     let isValid = true;
 
@@ -77,11 +78,21 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       setPasswordErrorMessage('');
     }
 
+    if (!privacy.checked) {
+      setError('Please agree to the privacy policy');
+      isValid = false;
+    } else {
+      setError('');
+    }
+
     return isValid;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!validateInputs()) {
+      return;
+    }
 
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
@@ -234,6 +245,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
               color={passwordError ? 'error' : 'primary'}
             />
           </FormControl>
+          <FormControlLabel
+            control={<Checkbox value="allowExtraEmails" color="primary" id="privacy" />}
+            label={<span>I agree to the{' '} <Link component={RLink} to="/privacy" target='_blank' variant="body2" sx={{ alignSelf: 'center' }} >privacy policy</Link></span>}
+          />
           <Button
             type="submit"
             fullWidth

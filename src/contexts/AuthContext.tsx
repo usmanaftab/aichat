@@ -59,8 +59,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsAuthenticated(false);
     setUser(null);
     setToken(null);
-    localStorage.clear();
     sessionStorage.clear();
+    localStorage.setItem('user', '');
+    localStorage.setItem('token', '');
   };
 
   const setLoadingState = (loading: boolean) => {

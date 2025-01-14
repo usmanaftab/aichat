@@ -2,10 +2,8 @@ import { Collapse } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
@@ -45,6 +43,10 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (emailError || passwordError || open) {
+      return;
+    }
+
+    if (!validateInputs()) {
       return;
     }
 
@@ -181,10 +183,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               color={passwordError ? 'error' : 'primary'}
             />
           </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <ForgotPassword open={open} handleClose={handleClose} setError={setError} />
           <Button
             type="submit"
