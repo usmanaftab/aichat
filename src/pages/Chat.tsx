@@ -105,6 +105,7 @@ function Chat() {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
 
+    // focus on input field
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -226,12 +227,12 @@ function Chat() {
                 </MessageHeader>
                 <MessageBubble
                   isUser={message.userName !== 'LLM (llama3.2)'}
-                  ref={index === messages.length - 2 ? lastMessageRef : null}
                 >
                   <ReactMarkdown>{message.message}</ReactMarkdown>
                 </MessageBubble>
               </MessageContainer>
             ))}
+            <div ref={lastMessageRef} />
           </List>
         </Paper>
         {userScrolled && (
