@@ -1,17 +1,18 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import { Button } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import MuiToolbar from '@mui/material/Toolbar';
+import { styled } from '@mui/material/styles';
 import { tabsClasses } from '@mui/material/Tabs';
-import Typography from '@mui/material/Typography';
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import SideMenuMobile from './SideMenuMobile';
-import MenuButton from './MenuButton';
+import MuiToolbar from '@mui/material/Toolbar';
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { AIChatLogo } from 'src/pages/components/CustomIcons';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
-import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
+import MenuButton from './MenuButton';
+import SideMenuMobile from './SideMenuMobile';
 
 const Toolbar = styled(MuiToolbar)({
   width: '100%',
@@ -64,10 +65,17 @@ export default function AppNavbar() {
             spacing={1}
             sx={{ justifyContent: 'center', mr: 'auto' }}
           >
-          <AutoAwesomeSharpIcon />
-          <Typography variant="h6">
-            AI Chat
-          </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Button component={Link} to="/" sx={{ p: 0 }}>
+                <AIChatLogo />
+              </Button>
+            </Box>
           </Stack>
           <ColorModeIconDropdown />
           <MenuButton aria-label="menu" onClick={toggleDrawer(true)}>

@@ -1,24 +1,19 @@
-import * as React from 'react';
+import { Collapse } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import MuiCard from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
-import AppTheme from './shared-theme/AppTheme';
+import * as React from 'react';
 import ColorModeSelect from './shared-theme/ColorModeSelect';
-import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
-import Alert from '@mui/material/Alert';
-import { Collapse } from '@mui/material';
-import { Card, AuthContainer } from './shared-theme/shared-styles';
+import { AuthContainer, Card } from './shared-theme/shared-styles';
 
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { authService } from '../services/authService';
 import { useNotification } from '../contexts/NotificationContext';
+import { authService } from '../services/authService';
+import { AIChatLogo } from './components/CustomIcons';
 
 export default function ResetPassword(props: { disableCustomTheme?: boolean }) {
   const [error, setError] = React.useState('');
@@ -67,7 +62,7 @@ export default function ResetPassword(props: { disableCustomTheme?: boolean }) {
     <AuthContainer direction="column" justifyContent="space-between">
       <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
       <Card variant="outlined">
-        <AutoAwesomeSharpIcon />
+        <AIChatLogo />
         <Typography
           component="h1"
           variant="h4"

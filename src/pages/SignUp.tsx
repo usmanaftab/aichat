@@ -1,4 +1,3 @@
-import AutoAwesomeSharpIcon from '@mui/icons-material/AutoAwesomeSharp';
 import { Alert, Collapse } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -14,6 +13,7 @@ import { Link as RLink, useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/contexts/AuthContext';
 import { useNotification } from 'src/contexts/NotificationContext';
 import { authService } from 'src/services/authService';
+import { AIChatLogo } from './components/CustomIcons';
 import ColorModeSelect from './shared-theme/ColorModeSelect';
 import { GoogleIcon } from './shared-theme/CustomIcons';
 import { AuthContainer, Card } from './shared-theme/shared-styles';
@@ -153,7 +153,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     <AuthContainer direction="column" justifyContent="space-between">
       <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
       <Card variant="outlined">
-        <AutoAwesomeSharpIcon />
+        <AIChatLogo />
         <Typography
           component="h1"
           variant="h4"
