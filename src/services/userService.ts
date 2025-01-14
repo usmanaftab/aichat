@@ -1,4 +1,4 @@
-// filepath: /Users/usmanaftab/Workspace/my-rag-app/my-app/src/services/userService.ts
+// filepath: /Users/usmanaftab/Workspace/my-rag-app/aichat/src/services/userService.ts
 import { config } from '../config';
 
 export const userService = {

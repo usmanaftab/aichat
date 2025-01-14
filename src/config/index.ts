@@ -6,13 +6,13 @@ interface Config {
 
 const development: Config = {
   API_URL: 'http://127.0.0.1:5000/api',
-  BASE_PATH: '/my-app/',
+  BASE_PATH: '/aichat/',
   NOT_FOUND_REDIRECT: '/',
 };
 
 const production: Config = {
   API_URL: 'https://aichat-server.usmanaftab.com/api',
-  BASE_PATH: '/my-app/',
+  BASE_PATH: '/aichat/',
   NOT_FOUND_REDIRECT: '/',
 };
 

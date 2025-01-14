@@ -1,4 +1,4 @@
-// filepath: /Users/usmanaftab/Workspace/my-rag-app/my-app/src/pages/UserProfile.tsx
+// filepath: /Users/usmanaftab/Workspace/my-rag-app/aichat/src/pages/UserProfile.tsx
 import { Alert, Box, Button, Collapse, Typography } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
