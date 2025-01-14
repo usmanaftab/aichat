@@ -66,7 +66,7 @@ const About = () => {
           </Box>
 
           <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
-            Why AI ChatHub?
+            Why AI Chat?
           </Typography>
           <Typography variant="body1" color="textSecondary" >
             AI ChatHub is not just a demonstration of AI—it’s a showcase of modern full-stack web development. Combining the latest in <strong>AI technology</strong>, <strong>responsive design</strong>, and <strong>secure architecture</strong>, this platform provides a glimpse into the future of intelligent and interactive web applications.
