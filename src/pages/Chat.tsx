@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import SendIcon from '@mui/icons-material/Send';
 import {
   Box,
@@ -54,13 +55,15 @@ const MessageHeader = styled('div')<{ isUser: boolean }>(({ isUser }) => ({
 function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const lastMessageRef = useRef<null | HTMLDivElement>(null);
   const { logout, user, token, isAuthenticated, loading } = useAuth();
   const userName = user?.fullName() || 'Anonymous'; // You can replace this with actual user name from your auth system
   const [isLoading, setIsLoading] = useState(false);
   const { showError } = useNotification();
   const navigate = useNavigate();
   const [remainingRequests, setRemainingRequests] = useState<number | null>(null);
+  const lastMessageRef = useRef<null | HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [userScrolled, setUserScrolled] = useState(false);
 
   useEffect(() => {
     const loadMessages = () => {
@@ -98,11 +101,29 @@ function Chat() {
       setRemainingRequests(parseInt(remainingRequests));
     }
 
-    // Scroll to last message
-    if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (!userScrolled && lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [messages, userScrolled]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const atBottom =
+      target.scrollHeight - target.scrollTop <= target.clientHeight + 5;
+    setUserScrolled(!atBottom);
+  };
+
+  // Re-enable auto-scroll when the user returns to the bottom
+  const handleScrollToBottom = () => {
+    setUserScrolled(false);
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,16 +196,18 @@ function Chat() {
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
       <Container maxWidth="md" sx={{ mt: 4 }}>
-        <Paper sx={{
-          height: '70vh',
-          mb: 2,
-          overflow: 'auto',
-          p: 2,
-          backgroundColor: (theme) => theme.palette.background.paper,
-          boxShadow: (theme) => theme.shadows[3],
-          borderRadius: 2,
-          elevation: 1,
-        }}>
+        <Paper
+          onScroll={handleScroll}
+          sx={{
+            height: '70vh',
+            mb: 2,
+            overflow: 'auto',
+            p: 2,
+            backgroundColor: (theme) => theme.palette.background.paper,
+            boxShadow: (theme) => theme.shadows[3],
+            borderRadius: 2,
+            elevation: 1,
+          }}>
           <List>
             {messages.map((message, index) => (
               <MessageContainer
@@ -211,6 +234,11 @@ function Chat() {
             ))}
           </List>
         </Paper>
+        {userScrolled && (
+          <Button onClick={handleScrollToBottom} variant="text" sx={{ width: '100%', textAlign: 'center' }}>
+            <ArrowCircleDownIcon />
+          </Button>
+        )}
         <Typography color="secondary" >
           Maximum 15 requests allowed per day
           {remainingRequests !== null && (
@@ -228,6 +256,7 @@ function Chat() {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               disabled={isLoading}
+              inputRef={inputRef}
             />
             <IconButton
               type="submit"
