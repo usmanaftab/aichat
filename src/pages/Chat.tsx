@@ -109,7 +109,7 @@ function Chat() {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [messages, userScrolled]);
+  }, [messages]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
