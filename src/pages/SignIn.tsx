@@ -69,6 +69,19 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     }
   };
 
+  const handleGuestLogin = async () => {
+    const email = "guest@aichat.com"
+    const password = "guest1234"
+    try {
+      const token = await authService.login({ email: email, password: password });
+      login(token.access_token);
+      navigate('/');
+      showSuccess('You are logged in as a guest');
+    } catch (err) {
+      setError('Failed to sign in as guest');
+    }
+  };
+
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
@@ -191,6 +204,14 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             onClick={validateInputs}
           >
             Sign in
+          </Button>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick={handleGuestLogin}
+          >
+            Sign in as Guest
           </Button>
           <Link
             component="button"
