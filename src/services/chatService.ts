@@ -46,9 +46,9 @@ export const chatService = {
       ...responseData,
       id: crypto.randomUUID(),
       message: responseData.response,
-      userName: 'LLM (llama3.2)',
+      userName: 'Amazon Nova Micro',
       timestamp: Date.now(),
       remainingRequests
     };
   }
-}; 
+};

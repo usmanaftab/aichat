@@ -216,17 +216,17 @@ function Chat() {
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: message.userName !== 'LLM (llama3.2)' ? 'flex-end' : 'flex-start'
+                  alignItems: message.userName !== 'Amazon Nova Micro' ? 'flex-end' : 'flex-start'
                 }}
               >
-                <MessageHeader isUser={message.userName !== 'LLM (llama3.2)'}>
+                <MessageHeader isUser={message.userName !== 'Amazon Nova Micro'}>
                   <span>{message.userName}</span>
                 </MessageHeader>
-                <MessageHeader isUser={message.userName !== 'LLM (llama3.2)'}>
+                <MessageHeader isUser={message.userName !== 'Amazon Nova Micro'}>
                   <span>{new Date(message.timestamp).toLocaleTimeString()}</span>
                 </MessageHeader>
                 <MessageBubble
-                  isUser={message.userName !== 'LLM (llama3.2)'}
+                  isUser={message.userName !== 'Amazon Nova Micro'}
                 >
                   <ReactMarkdown>{message.message}</ReactMarkdown>
                 </MessageBubble>
