@@ -17,6 +17,7 @@ import { styled } from '@mui/material/styles';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
+import { authService } from 'src/services/authService';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
 import { chatService, Message } from '../services/chatService';
@@ -64,6 +65,8 @@ function Chat() {
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [userScrolled, setUserScrolled] = useState(false);
+  const { login } = useAuth();
+  const { showSuccess } = useNotification();
 
   useEffect(() => {
     const loadMessages = () => {
@@ -184,10 +187,24 @@ function Chat() {
   }
 
   if (!isAuthenticated) {
+    const handleGuestLogin = async () => {
+      try {
+        const token = await authService.loginAsGuest();
+        login(token.access_token);
+        navigate('/');
+        showSuccess('You are logged in as a guest');
+      } catch (err) {
+        showError('Failed to sign in as guest');
+      }
+    };
+
     return (
       <React.Fragment>
         <About />
-        <Button variant="contained" color="primary" onClick={() => navigate('/login')}>
+        <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleGuestLogin}>
+          Sign in as Guest
+        </Button>
+        <Button variant="contained" color="secondary" onClick={() => navigate('/login')}>
           Sign In to chat with AI
         </Button>
       </React.Fragment>

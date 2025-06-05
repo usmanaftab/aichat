@@ -27,7 +27,15 @@ const defaultHeaders = {
   'Access-Control-Allow-Credentials': 'true',
 };
 
+
 export const authService = {
+  async loginAsGuest() {
+    return this.login({
+      email: 'guest@aichat.com',
+      password: 'guest1234'
+    });
+  },
+
   async login(credentials: LoginCredentials) {
     const response = await fetch(`${config.API_URL}/auth/login`, {
       method: 'POST',

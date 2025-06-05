@@ -70,10 +70,8 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
 
   const handleGuestLogin = async () => {
-    const email = "guest@aichat.com"
-    const password = "guest1234"
     try {
-      const token = await authService.login({ email: email, password: password });
+      const token = await authService.loginAsGuest();
       login(token.access_token);
       navigate('/');
       showSuccess('You are logged in as a guest');
